@@ -321,10 +321,16 @@ SOFTWARE.
 [NSIS](https://nsis.sourceforge.io/License) (zlib/libpng license; some compression modules are
 under the bzip2 and CPL-1.0 licenses) and its bundled plug-ins.
 
-The portable `.exe` also contains `resources/elevate.exe`, a helper that electron-builder adds from its NSIS
-toolset and that Rembg Studio does not use. The file identifies itself as "Elevate" by Johannes Passing,
-"Copyright (C) 2007". A project by the same author, https://github.com/jpassing/elevate, is shown by GitHub as
-MIT-licensed, but we could not verify that this binary was built from it, so we do not state a license for it.
+From version 1.1.0, `scripts/dist.mjs` stops electron-builder from adding its `elevate.exe` helper to the packages:
+the app does not need it and its license could not be verified.
+
+### FFmpeg (LGPL)
+
+`ffmpeg.dll` is the dynamically linked FFmpeg library that comes unmodified with the official Electron release. It
+can be replaced by a compatible build. Its license text is in `LICENSES.chromium.html`. The corresponding source is
+the FFmpeg revision used by the Chromium version of that Electron release; see
+https://github.com/electron/electron (tag `v` + the Electron version above) and
+https://chromium.googlesource.com/chromium/third_party/ffmpeg/.
 
 ## NOT included: installed separately by the user
 

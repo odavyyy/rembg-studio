@@ -11,6 +11,7 @@ import type {
   ProcessOptions,
   Settings,
   Toast,
+  UpdateState,
   WorkerStatus,
 } from '../shared/types'
 import { DEFAULT_SETTINGS } from '../shared/types'
@@ -21,7 +22,7 @@ declare global {
   }
 }
 
-export type Page = 'workspace' | 'batch' | 'recents' | 'models' | 'settings'
+export type Page = 'workspace' | 'batch' | 'recents' | 'models' | 'settings' | 'about'
 
 interface Conflict {
   ids: string[]
@@ -50,6 +51,7 @@ interface State {
   options: ProcessOptions
   toasts: (Toast & { id: number })[]
   conflict: Conflict | null
+  update: UpdateState | null
 }
 
 export const useStore = create<State>(() => ({
@@ -71,6 +73,7 @@ export const useStore = create<State>(() => ({
   options: DEFAULT_SETTINGS.options,
   toasts: [],
   conflict: null,
+  update: null,
 }))
 
 const set = useStore.setState
@@ -116,6 +119,8 @@ export async function init() {
   a.onStats((stats) => set({ stats }))
   a.onToast((t) => toast(t.kind, t.text))
   a.onSettings((settings) => set({ settings }))
+  a.onUpdate((update) => set({ update }))
+  void a.updateState().then((update) => set({ update }))
   a.onWorker((worker) => {
     const was = get().worker.state
     set({ worker })
@@ -183,7 +188,8 @@ export async function processIds(ids: string[]) {
   if (!valid.length) return
   const active = items.some(isBusy)
   set({ run: active ? [...new Set([...run, ...valid])] : valid })
-  await api().process(valid, { model, options })
+  // false: o aviso de licenca do modelo foi recusado e nada entrou na fila
+  if (!(await api().process(valid, { model, options }))) set({ run })
 }
 
 /** pendentes; se nao houver, todas (reprocessar) */

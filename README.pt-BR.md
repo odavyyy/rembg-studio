@@ -10,6 +10,8 @@ lugar nenhum.
 
 [English](README.md) · **Português (Brasil)**
 
+[Privacidade](PRIVACY.md) · [Condições de uso](TERMS.md) · [Licenças dos modelos](MODEL_LICENSES.md) · [Política de assinatura de código](CODE_SIGNING_POLICY.md)
+
 > **O rembg não vem junto.** Você instala uma vez, e o app o encontra e usa.
 
 ## Funcionalidades
@@ -50,8 +52,8 @@ Só CPU (essa variante do pacote não foi testada com o app):
 uv tool install "rembg[cpu,cli]==2.0.88" --python 3.12
 ```
 
-Depois baixe na página de [Releases](../../releases) o instalador `RembgStudio-Setup-1.0.0.exe` (**ainda não
-testado**), o `RembgStudio-1.0.0-portatil.exe` ou o `RembgStudio-1.0.0-win-x64.zip`. Os executáveis não são
+Depois baixe na página de [Releases](../../releases) o instalador `RembgStudio-Setup-1.1.0.exe` (**ainda não
+testado**), o `RembgStudio-1.1.0-portatil.exe` ou o `RembgStudio-1.1.0-win-x64.zip`. Os executáveis não são
 assinados, então o SmartScreen pode avisar. Confira o arquivo com o `SHA256SUMS.txt`.
 
 Se o rembg estiver em outro lugar, use **Configurações → Diagnóstico → Escolher python.exe…**. Escolha apenas um
@@ -93,20 +95,34 @@ aconselhamento jurídico.
 - Cancelar reinicia o processo do rembg.
 - A interface existe apenas em português.
 
+## Atualizações
+
+Em **Sobre → Verificar atualizações**. Nada é verificado sozinho. O app considera só a versão estável publicada
+mais recente, confere tamanho e SHA-256 e pede confirmação. No portátil, a nova versão é colocada **ao lado** da
+atual (que não é apagada) e aberta; com o instalador, ele é aberto; no ZIP, o arquivo é salvo para você extrair.
+Só o app é atualizado: Python, rembg, CUDA, drivers, modelos, configurações e histórico não são tocados. A soma
+SHA-256 vem da própria release: detecta arquivo corrompido, mas não prova autoria. A versão 1.0.0 não tem
+atualizador. Para remover o app instalado, use **Configurações do Windows → Aplicativos**; portátil e ZIP, basta
+apagar os arquivos. Os dados ficam em `%APPDATA%\Rembg Studio` até você apagar a pasta.
+
 ## Privacidade
 
-O código do app não faz acessos à rede nem tem telemetria. O rembg baixa os modelos quando precisa. (O tráfego
-não foi monitorado com ferramenta externa.) Os dados ficam em `%APPDATA%\Rembg Studio`: configurações, histórico
-com **os caminhos das suas imagens** e **miniaturas dos resultados**, e cache temporário.
+As imagens são processadas no seu computador. O mantenedor não recebe dados. A rede só é usada quando você pede:
+verificar ou baixar atualização, e o rembg baixar um modelo escolhido. Histórico, **caminhos** e **miniaturas** ficam
+sem criptografia em `%APPDATA%\Rembg Studio`. Detalhes, medições e limites na [Política de Privacidade](PRIVACY.md).
+
+## Assinatura de código
+
+As versões **não são assinadas** e nenhum pedido foi aprovado. Veja a [política](CODE_SIGNING_POLICY.md).
 
 ## Testes
 
-A bateria `tests/e2e.mjs` (32 verificações) rodou contra o app extraído do ZIP gerado a partir de uma cópia limpa
-do código, com o rembg e a GPU reais. Os diálogos do
-Windows são simulados e o arrastar e soltar usa um evento injetado. O portátil só foi aberto e fechado. **Não
-foram testados:** o instalador, o download pelo GitHub, o ViTMatte, o download de modelo pelo app, os outros 13 modelos, alguns
-botões do lote, atalhos, o tema "Igual ao Windows", instalação só CPU e outros computadores. A lista completa está
-no [README em inglês](README.md#status-and-testing).
+No app empacotado, com rembg e GPU reais: 33 verificações do app e 39 do atualizador. Neste, a troca de versão do
+portátil foi real (com a confirmação simulada); o servidor, as falhas e as demais janelas foram simulados. **Não
+foram testados:** o instalador (inclusive a atualização de uma cópia instalada), o download de uma release
+publicada de verdade, assinatura com versão assinada, o workflow do GitHub, o ViTMatte, o download de modelo pelo
+app, os outros 13 modelos e outros computadores. A lista completa está no
+[README em inglês](README.md#status-and-testing).
 
 ## Como compilar, licença e créditos
 

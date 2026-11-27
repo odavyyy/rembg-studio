@@ -4,7 +4,7 @@ node_modules/
 # build output and release files
 dist/
 dist-electron/
-release/
+/release*/
 *.exe
 *.zip
 *.7z

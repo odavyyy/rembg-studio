@@ -142,7 +142,14 @@ def rembg_modules():
     global _rembg_mod
     if _rembg_mod is None:
         add_cuda_dll_dirs()
+        # telemetria do ONNX Runtime desligada somente neste processo
+        os.environ["ORT_DISABLE_TELEMETRY"] = "1"
         import onnxruntime as ort
+
+        try:
+            ort.disable_telemetry_events()
+        except Exception:  # noqa: BLE001
+            pass
         import rembg
         from rembg import bg, matting
         from rembg.sessions import sessions

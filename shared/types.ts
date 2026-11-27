@@ -41,6 +41,8 @@ export interface Settings {
   previewMode: PreviewMode
   theme: Theme
   pythonPath: string | null
+  /** o usuario leu o aviso de licenca do modelo BRIA */
+  briaAck: boolean
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -55,6 +57,7 @@ export const DEFAULT_SETTINGS: Settings = {
   previewMode: 'compare',
   theme: 'dark',
   pythonPath: null,
+  briaAck: false,
 }
 
 export type ItemStatus =
@@ -196,6 +199,42 @@ export interface Toast {
   text: string
 }
 
+export type UpdateStatus =
+  | 'idle'
+  | 'checking'
+  | 'up-to-date'
+  | 'no-release'
+  | 'available'
+  | 'downloading'
+  | 'verifying'
+  | 'ready'
+  | 'installing'
+  | 'saved'
+  | 'cancelled'
+  | 'download-error'
+  | 'error'
+
+export interface UpdateState {
+  status: UpdateStatus
+  currentVersion: string
+  installType: 'portable' | 'installed' | 'zip' | 'dev'
+  /** servidor de teste local ativo (somente em testes) */
+  testServer: boolean
+  latestVersion: string | null
+  notes: string | null
+  publishedAt: string | null
+  assetName: string | null
+  size: number | null
+  received: number
+  bytesPerSecond: number
+  signature: 'matches' | 'unsigned-build' | null
+  message: string | null
+  checkedAt: number | null
+}
+
+export type DocId = 'privacy' | 'terms' | 'models' | 'signing' | 'license' | 'third-party'
+export type LinkId = 'repository' | 'releases' | 'issues' | 'bria-license'
+
 export interface Api {
   getInitialState(): Promise<InitialState>
   setSettings(patch: Partial<Settings>): Promise<Settings>
@@ -204,7 +243,7 @@ export interface Api {
   addFromDialog(): Promise<{ added: number; rejected: string[] }>
   removeItems(ids: string[]): Promise<void>
   clearItems(): Promise<void>
-  process(ids: string[], opts?: { model?: string; options?: ProcessOptions }): Promise<void>
+  process(ids: string[], opts?: { model?: string; options?: ProcessOptions }): Promise<boolean>
   cancel(ids: string[] | 'all'): Promise<void>
   saveOne(id: string): Promise<string | null>
   saveMany(ids: string[], opts: { dir?: string; policy?: ConflictPolicy; askDir?: boolean }): Promise<SaveManyResult>
@@ -220,6 +259,14 @@ export interface Api {
   gpuTest(model?: string): Promise<GpuTest>
   downloadModel(name: string): Promise<EnvInfo | null>
   restartWorker(): Promise<void>
+  updateState(): Promise<UpdateState>
+  updateCheck(): Promise<UpdateState>
+  updateDownload(): Promise<UpdateState>
+  updateCancel(): Promise<void>
+  updateInstall(): Promise<UpdateState>
+  readDoc(id: DocId): Promise<string>
+  openLink(id: LinkId): Promise<void>
+  onUpdate(cb: (s: UpdateState) => void): () => void
   namePreview(pattern: string): Promise<string>
   renameItem(id: string, name: string): Promise<void>
   onItems(cb: (items: Item[]) => void): () => void

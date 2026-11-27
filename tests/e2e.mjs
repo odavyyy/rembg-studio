@@ -415,6 +415,29 @@ await test('Cancelar a fila e continuar usando', async () => {
   assert(ok.items[0].status === 'done', ok.items[0].error)
 })
 
+await test('Modelo BRIA: aviso de licença antes do primeiro uso', async () => {
+  await app.evaluate(({ dialog }) => {
+    globalThis.briaDialogs = []
+    globalThis.briaAnswer = 2 // Cancelar
+    dialog.showMessageBox = async (_w, o) => { globalThis.briaDialogs.push(o.message + ' ' + o.detail); return { response: globalThis.briaAnswer } }
+  })
+  assert((await state()).settings.briaAck === false, 'já estava aceito')
+  const first = (await state()).items[0]
+  const queued = await page.evaluate((id) => window.api.process([id], { model: 'bria-rmbg' }), first.id)
+  await page.waitForTimeout(500)
+  assert(queued === false && (await state()).items[0].resultModel !== 'bria-rmbg', 'processou sem aceitar')
+  await page.evaluate(() => window.api.setSettings({ defaultModel: 'bria-rmbg' }))
+  assert((await state()).settings.defaultModel !== 'bria-rmbg', 'virou padrão sem aceitar')
+  await page.evaluate(() => window.api.setSettings({ briaAck: true }))
+  assert((await state()).settings.briaAck === false, 'a interface conseguiu aceitar sozinha')
+  const texts = await app.evaluate(() => globalThis.briaDialogs)
+  assert(texts.length === 2 && /não comercial/.test(texts[0]) && /contrato com a BRIA/.test(texts[0]), JSON.stringify(texts))
+  await app.evaluate(() => { globalThis.briaAnswer = 0 })
+  assert((await page.evaluate((id) => window.api.process([id], { model: 'bria-rmbg' }), first.id)) === true, 'não entrou na fila')
+  await settled('bria')
+  assert((await state()).items[0].resultModel === 'bria-rmbg' && (await state()).settings.briaAck === true, 'aceite não foi registrado')
+})
+
 await test('Queda do processo Python: erro na imagem e a fila segue', async () => {
   const ids = (await state()).items.slice(0, 2).map((i) => i.id)
   await page.evaluate((ids) => window.api.process(ids, { model: 'bria-rmbg' }), ids)

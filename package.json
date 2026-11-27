@@ -1,7 +1,7 @@
 {
   "name": "rembg-studio",
   "productName": "Rembg Studio",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A Windows desktop app for background removal using rembg, with GPU acceleration and batch processing.",
   "author": "odavyyy",
   "license": "MIT",
@@ -21,7 +21,7 @@
     "build": "tsc --noEmit -p tsconfig.json && npm run build:main && npm run build:renderer",
     "start": "npm run build && electron .",
     "dev": "node scripts/dev.mjs",
-    "dist": "npm run build && electron-builder --win --publish never",
+    "dist": "npm run build && node scripts/dist.mjs",
     "test:e2e": "node tests/e2e.mjs",
     "notices": "node scripts/notices.mjs",
     "art": "electron scripts/render-art.cjs"
@@ -75,6 +75,22 @@
       {
         "from": "THIRD_PARTY_NOTICES.md",
         "to": "THIRD_PARTY_NOTICES.md"
+      },
+      {
+        "from": "PRIVACY.md",
+        "to": "PRIVACY.md"
+      },
+      {
+        "from": "TERMS.md",
+        "to": "TERMS.md"
+      },
+      {
+        "from": "MODEL_LICENSES.md",
+        "to": "MODEL_LICENSES.md"
+      },
+      {
+        "from": "CODE_SIGNING_POLICY.md",
+        "to": "CODE_SIGNING_POLICY.md"
       }
     ],
     "publish": null,

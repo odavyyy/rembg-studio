@@ -146,7 +146,7 @@ export function SettingsPage() {
           <button className="btn mt-3" onClick={() => void saveSettings({ options: DEFAULT_OPTIONS })}>Restaurar padrões</button>
         </Collapsible>
         <Diagnostics />
-        <p className="pb-2 text-center text-xs text-muted">Rembg Studio {version} · processamento 100% local · atalhos: Ctrl+O abrir, Ctrl+Enter processar, Ctrl+S salvar</p>
+        <p className="pb-2 text-center text-xs text-muted">Rembg Studio {version} · imagens processadas neste computador · atalhos: Ctrl+O abrir, Ctrl+Enter processar, Ctrl+S salvar</p>
       </div>
     </div>
   )

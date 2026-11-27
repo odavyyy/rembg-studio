@@ -6,7 +6,10 @@ import { detectPython, queryNvidiaSmi, Worker } from './worker'
 import { Studio, INPUT_EXTS } from './studio'
 import { buildName, uniquePath } from './naming'
 import { isModelName } from './store'
+import { Updater } from './updater'
+import { DOC_FILES, LINKS } from './docs'
 import type { ConflictPolicy, EnvInfo, GpuInfo, InitialState, Settings } from '../shared/types'
+import { readFile } from 'node:fs/promises'
 
 const DEV_URL = app.isPackaged ? undefined : process.env.REMBG_STUDIO_DEV_URL
 // usado pelos testes para nao tocar nas configuracoes reais
@@ -20,6 +23,31 @@ let win: BrowserWindow | null = null
 let worker: Worker
 let studio: Studio
 let envCache: EnvInfo | null = null
+let updater: Updater
+
+/** Aviso unico de licenca antes do primeiro uso ou download do modelo BRIA. */
+async function allowModel(model: string): Promise<boolean> {
+  if (model !== 'bria-rmbg' || studio.settings.briaAck) return true
+  for (;;) {
+    const r = await dialog.showMessageBox(win!, {
+      type: 'info',
+      title: 'Licença do modelo BRIA RMBG 2.0',
+      message: 'Este modelo é liberado somente para uso não comercial.',
+      detail: 'A BRIA publica o RMBG 2.0 sob CC BY-NC 4.0 para uso não comercial. Uso comercial exige um contrato com a BRIA. A licença do Rembg Studio não muda isso. Confira os termos antes de continuar.',
+      buttons: ['Entendi, continuar', 'Ver a licença', 'Cancelar'],
+      defaultId: 2,
+      cancelId: 2,
+      noLink: true,
+    })
+    if (r.response === 1) {
+      await shell.openExternal(LINKS['bria-license'])
+      continue
+    }
+    if (r.response !== 0) return false
+    studio.setSettings({ briaAck: true })
+    return true
+  }
+}
 
 const send = (channel: string, data: unknown) => {
   if (win && !win.isDestroyed()) win.webContents.send(channel, data)
@@ -91,8 +119,10 @@ function registerIpc() {
     platform: process.platform,
     version: app.getVersion(),
   }))
-  h('setSettings', (patch: Partial<Settings>) => {
+  h('setSettings', async (patch: Partial<Settings>) => {
     const clean = { ...patch }
+    delete clean.briaAck // so o aviso nativo registra isso
+    if (clean.defaultModel === 'bria-rmbg' && !(await allowModel('bria-rmbg'))) delete clean.defaultModel
     // o caminho do Python so muda pelo seletor de arquivos (ou volta ao automatico)
     if (clean.pythonPath !== null) delete clean.pythonPath
     const before = studio.settings.pythonPath
@@ -115,7 +145,12 @@ function registerIpc() {
   })
   h('removeItems', (ids: unknown) => studio.removeItems(strings(ids)))
   h('clearItems', () => studio.removeItems(studio.items.map((i) => i.id)))
-  h('process', (ids: unknown, opts?: any) => studio.process(strings(ids), opts))
+  h('process', async (ids: unknown, opts?: any) => {
+    const model = isModelName(opts?.model) ? opts.model : studio.settings.defaultModel
+    if (!(await allowModel(model))) return false
+    studio.process(strings(ids), opts)
+    return true
+  })
   h('cancel', (ids: unknown) => studio.cancel(ids === 'all' ? 'all' : strings(ids)))
   h('renameItem', (id: string, name: unknown) => studio.renameItem(id, String(name ?? '')))
 
@@ -200,12 +235,28 @@ function registerIpc() {
   h('gpuTest', (model?: string) => worker.request('gpu_test', { model: isModelName(model) ? model : 'isnet-general-use' }, 15 * 60_000))
   h('downloadModel', async (name: string) => {
     if (!isModelName(name)) throw new Error('Modelo inválido.')
+    if (!(await allowModel(name))) return getEnv()
     await worker.request('download', { model: name })
     return getEnv(true)
   })
   h('restartWorker', () => {
     envCache = null
     return worker.restart()
+  })
+  // a interface nao envia URLs nem caminhos: so estes comandos sem parametros
+  h('updateState', () => updater.state)
+  h('updateCheck', () => updater.check())
+  h('updateDownload', () => updater.download())
+  h('updateCancel', () => updater.cancel())
+  h('updateInstall', () => updater.install())
+  h('readDoc', async (id: string) => {
+    const file = Object.hasOwn(DOC_FILES, id) ? DOC_FILES[id as keyof typeof DOC_FILES] : null
+    if (!file) throw new Error('Documento desconhecido.')
+    const path = app.isPackaged ? join(process.resourcesPath, file.packaged) : join(app.getAppPath(), file.source)
+    return readFile(path, 'utf8')
+  })
+  h('openLink', async (id: string) => {
+    if (Object.hasOwn(LINKS, id)) await shell.openExternal(LINKS[id as keyof typeof LINKS])
   })
   h('namePreview', (pattern: string) => `${buildName(String(pattern ?? ''), 'imagem.jpg', studio.settings.defaultModel, 1)}.png`)
 }
@@ -242,6 +293,15 @@ if (!app.requestSingleInstanceLock()) {
     studio.on('toast', (v) => send('toast', v))
     studio.on('settings', (v) => send('settings', v))
     worker.on('status', (v) => send('worker', v))
+
+    updater = new Updater(app.getPath('userData'), {
+      window: () => win,
+      isBusy: () => studio.isBusy(),
+      unsavedResults: () => studio.unsavedResults(),
+      stopWorker: () => worker.stopAndWait(),
+      resumeWorker: () => void worker.resume(),
+    })
+    updater.on('state', (v) => send('update', v))
 
     registerIpc()
     createWindow()

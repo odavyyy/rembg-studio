@@ -1,0 +1,196 @@
+# Build das releases no GitHub, com assinatura opcional pela SignPath.
+#
+# AINDA NAO EXECUTADO. A assinatura fica desligada ate o projeto ser aprovado e
+# a variavel SIGNPATH_ENABLED ser definida como "true" (veja docs/SIGNING_SETUP.md).
+# Este workflow so cria RASCUNHO de release; publicar e sempre manual.
+name: release
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: windows-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      exe-artifact-id: ${{ steps.upload-exe.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+      - name: Check that the tag matches package.json
+        id: version
+        shell: pwsh
+        run: |
+          $v = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          if ($env:GITHUB_REF_NAME -ne "v$v") { throw "Tag $env:GITHUB_REF_NAME does not match version $v" }
+          "version=$v" >> $env:GITHUB_OUTPUT
+      - run: npm ci
+      - run: node tests/unit.mjs
+      - run: npm run build
+      - run: node scripts/dist.mjs --targets=dir
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: unpacked
+          path: release/win-unpacked
+          if-no-files-found: error
+      - id: upload-exe
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: app-exe-unsigned
+          path: release/win-unpacked/Rembg Studio.exe
+          if-no-files-found: error
+
+  sign-app:
+    needs: build
+    if: vars.SIGNPATH_ENABLED == 'true' && github.repository == 'odavyyy/rembg-studio'
+    runs-on: windows-latest
+    environment: signing # configure required reviewers on this environment
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: SignPath/github-action-submit-signing-request@a2c5b60d9c75f073142b653c354b632eedce097b # v3.2
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ vars.SIGNPATH_SIGNING_POLICY_SLUG }}
+          artifact-configuration-slug: ${{ vars.SIGNPATH_APP_ARTIFACT_CONFIGURATION }}
+          github-artifact-id: ${{ needs.build.outputs.exe-artifact-id }}
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 3600
+          output-artifact-directory: signed
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: app-exe-signed
+          path: signed/Rembg Studio.exe
+          if-no-files-found: error
+
+  package:
+    needs: [build, sign-app]
+    if: ${{ !cancelled() && needs.build.result == 'success' && (needs.sign-app.result == 'success' || needs.sign-app.result == 'skipped') }}
+    runs-on: windows-latest
+    outputs:
+      wrappers-artifact-id: ${{ steps.upload-wrappers.outputs.artifact-id }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+      - run: npm ci
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: unpacked
+          path: prepackaged
+      - if: needs.sign-app.result == 'success'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: app-exe-signed
+          path: prepackaged
+      - run: node scripts/dist.mjs --targets=nsis,portable,zip --prepackaged=prepackaged
+      - name: Verify the app signature survived packaging
+        if: needs.sign-app.result == 'success'
+        shell: pwsh
+        run: |
+          Expand-Archive "release/RembgStudio-${{ needs.build.outputs.version }}-win-x64.zip" check
+          $s = Get-AuthenticodeSignature "check/Rembg Studio.exe"
+          if ($s.Status -ne 'Valid') { throw "Inner executable signature is $($s.Status)" }
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: packages
+          path: |
+            release/RembgStudio-*.exe
+            release/RembgStudio-*.zip
+          if-no-files-found: error
+      - id: upload-wrappers
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: wrappers-unsigned
+          path: release/RembgStudio-*.exe
+          if-no-files-found: error
+
+  sign-wrappers:
+    needs: [package, sign-app]
+    if: ${{ !cancelled() && needs.package.result == 'success' && needs.sign-app.result == 'success' }}
+    runs-on: windows-latest
+    environment: signing
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: SignPath/github-action-submit-signing-request@a2c5b60d9c75f073142b653c354b632eedce097b # v3.2
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ vars.SIGNPATH_SIGNING_POLICY_SLUG }}
+          artifact-configuration-slug: ${{ vars.SIGNPATH_WRAPPERS_ARTIFACT_CONFIGURATION }}
+          github-artifact-id: ${{ needs.package.outputs.wrappers-artifact-id }}
+          wait-for-completion: true
+          wait-for-completion-timeout-in-seconds: 3600
+          output-artifact-directory: signed
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: wrappers-signed
+          path: signed/*.exe
+          if-no-files-found: error
+
+  draft-release:
+    needs: [build, sign-app, package, sign-wrappers]
+    # se a assinatura foi pedida, so cria o rascunho com tudo assinado
+    if: ${{ !cancelled() && needs.package.result == 'success' && ((needs.sign-app.result == 'skipped' && needs.sign-wrappers.result == 'skipped') || needs.sign-wrappers.result == 'success') }}
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: packages
+          path: out
+      - if: needs.sign-wrappers.result == 'success'
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: wrappers-signed
+          path: out
+      - name: Verify signatures
+        if: needs.sign-wrappers.result == 'success'
+        shell: pwsh
+        run: |
+          Get-ChildItem out/*.exe | ForEach-Object {
+            $s = Get-AuthenticodeSignature $_.FullName
+            if ($s.Status -ne 'Valid') { throw "$($_.Name): $($s.Status)" }
+            "$($_.Name): $($s.SignerCertificate.Subject)"
+          }
+      - name: Source archive and checksums
+        shell: pwsh
+        run: |
+          $v = "${{ needs.build.outputs.version }}"
+          git archive --format=zip --prefix="rembg-studio-$v/" -o "out/RembgStudio-$v-Source.zip" HEAD
+          $lines = Get-ChildItem out -File | Where-Object Name -ne 'SHA256SUMS.txt' | Sort-Object Name |
+            ForEach-Object { (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower() + "  " + $_.Name }
+          [IO.File]::WriteAllText("$PWD/out/SHA256SUMS.txt", ($lines -join "`n") + "`n")
+      - name: Create DRAFT release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          $files = (Get-ChildItem out -File).FullName
+          gh release create "v$env:VERSION" $files --draft --verify-tag --title "Rembg Studio $env:VERSION" --notes-file "docs/releases/v$env:VERSION.md"

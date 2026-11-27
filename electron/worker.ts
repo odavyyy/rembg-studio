@@ -80,7 +80,8 @@ export class Worker extends EventEmitter {
     const proc = spawn(python, ['-I', '-B', this.scriptPath], {
       stdio: ['pipe', 'pipe', 'pipe'],
       windowsHide: true,
-      env: { ...process.env, PYTHONIOENCODING: 'utf-8', PYTHONUNBUFFERED: '1' },
+      // ORT_DISABLE_TELEMETRY vale so para este processo, nao para o Windows
+      env: { ...process.env, PYTHONIOENCODING: 'utf-8', PYTHONUNBUFFERED: '1', ORT_DISABLE_TELEMETRY: '1' },
     })
     this.proc = proc
     const rl = createInterface({ input: proc.stdout })
@@ -222,6 +223,30 @@ export class Worker extends EventEmitter {
     } catch {}
     const p = this.proc
     setTimeout(() => p.kill(), 1500)
+  }
+
+  /** Encerra o processo e so retorna depois que ele saiu. */
+  stopAndWait(timeoutMs = 8000): Promise<void> {
+    const p = this.proc
+    if (!p) {
+      this.shuttingDown = true
+      return Promise.resolve()
+    }
+    return new Promise((done) => {
+      const timer = setTimeout(done, timeoutMs)
+      p.once('exit', () => {
+        clearTimeout(timer)
+        done()
+      })
+      this.stop()
+    })
+  }
+
+  /** volta a funcionar depois de um stopAndWait (atualizacao que falhou) */
+  async resume() {
+    this.shuttingDown = false
+    this.restarts = 0
+    if (!this.proc) await this.start()
   }
 
   lastStderr() {

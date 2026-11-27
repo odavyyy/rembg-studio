@@ -1,5 +1,6 @@
-import { Boxes, CircleAlert, Clock, CircleCheck, Image as ImageIcon, Info, Layers, Settings as Gear, Upload } from 'lucide-react'
+import { ArrowUpCircle, Boxes, CircleAlert, Clock, CircleCheck, Image as ImageIcon, Info, Layers, Settings as Gear, Upload } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { About } from './pages/About'
 import { Batch } from './pages/Batch'
 import { Models } from './pages/Models'
 import { Recents } from './pages/Recents'
@@ -14,6 +15,7 @@ const NAV: [Page, string, typeof ImageIcon][] = [
   ['recents', 'Recentes', Clock],
   ['models', 'Modelos', Boxes],
   ['settings', 'Configurações', Gear],
+  ['about', 'Sobre', Info],
 ]
 
 function DeviceStatus() {
@@ -104,6 +106,7 @@ export function App() {
   const total = useStore((s) => s.items.length)
   const pending = useStore((s) => s.items.filter(isBusy).length)
   const [dragging, setDragging] = useState(false)
+  const newVersion = useStore((s) => (s.update && ['available', 'downloading', 'verifying', 'ready', 'cancelled', 'download-error'].includes(s.update.status) ? s.update.latestVersion : null))
 
   useEffect(() => void init(), [])
 
@@ -153,6 +156,7 @@ export function App() {
           {NAV.map(([id, label, Icon]) => (
             <button key={id} data-testid={`nav-${id}`} onClick={() => go(id)} className={`flex h-9 cursor-pointer items-center gap-2.5 rounded-lg px-2.5 font-medium transition-colors ${page === id ? 'bg-accent/15 text-fg' : 'text-muted hover:bg-hover hover:text-fg'}`}>
               <Icon size={16} className={page === id ? 'text-accent2' : ''} />{label}
+              {id === 'about' && newVersion && <ArrowUpCircle size={14} className="ml-auto text-accent2" aria-label={`Versão ${newVersion} disponível`} />}
               {id === 'batch' && total > 0 && <span className="ml-auto rounded-full bg-hover px-1.5 text-xs tabular-nums">{pending ? `${total - pending}/${total}` : total}</span>}
             </button>
           ))}
@@ -162,7 +166,7 @@ export function App() {
       <main className="flex min-w-0 flex-1 flex-col">
         <Warning />
         <div className="min-h-0 flex-1">
-          {page === 'workspace' ? <Workspace /> : page === 'batch' ? <Batch /> : page === 'recents' ? <Recents /> : page === 'models' ? <Models /> : <SettingsPage />}
+          {page === 'workspace' ? <Workspace /> : page === 'batch' ? <Batch /> : page === 'recents' ? <Recents /> : page === 'models' ? <Models /> : page === 'about' ? <About /> : <SettingsPage />}
         </div>
       </main>
       {dragging && (

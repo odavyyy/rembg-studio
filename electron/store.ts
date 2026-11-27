@@ -59,5 +59,6 @@ export function sanitizeSettings(s: any): Settings {
     previewMode: oneOf(s?.previewMode, ['compare', 'result', 'original'] as const, d.previewMode),
     theme: oneOf(s?.theme, ['dark', 'light', 'system'] as const, d.theme),
     pythonPath: path(s?.pythonPath),
+    briaAck: bool(s?.briaAck, d.briaAck),
   }
 }

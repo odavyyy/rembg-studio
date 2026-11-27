@@ -206,7 +206,8 @@ export class Studio extends EventEmitter {
       }
       if (item.status === 'probing') changes.status = 'idle'
       this.patch(item, changes)
-      if (this.settings.autoProcess && item.status === 'idle') this.process([item.id])
+      const needsNotice = this.settings.defaultModel === 'bria-rmbg' && !this.settings.briaAck
+      if (this.settings.autoProcess && !needsNotice && item.status === 'idle') this.process([item.id])
     } catch (e) {
       if (!this.find(item.id)) return
       const msg = (e as Error).message
@@ -372,6 +373,14 @@ export class Studio extends EventEmitter {
     this.cancel(ids)
     this.items = this.items.filter((i) => !ids.includes(i.id))
     this.emitItems()
+  }
+
+  isBusy() {
+    return !!this.current || this.queue.length > 0
+  }
+
+  unsavedResults() {
+    return this.items.filter((i) => i.status === 'done' && !i.savedPath).length
   }
 
   // ---------------- exportacao ----------------

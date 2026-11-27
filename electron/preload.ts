@@ -13,6 +13,7 @@ const names = [
   'getInitialState', 'setSettings', 'addPaths', 'addFromDialog', 'removeItems', 'clearItems', 'process', 'cancel',
   'renameItem', 'saveOne', 'saveMany', 'chooseFolder', 'choosePython', 'reveal', 'openPath', 'historyRemove',
   'historyClear', 'historyOpen', 'getEnv', 'gpuInfo', 'gpuTest', 'downloadModel', 'restartWorker', 'namePreview',
+  'updateState', 'updateCheck', 'updateDownload', 'updateCancel', 'updateInstall', 'readDoc', 'openLink',
 ]
 
 const api = {
@@ -25,6 +26,7 @@ const api = {
   onStats: on('stats'),
   onToast: on('toast'),
   onSettings: on('settings'),
+  onUpdate: on('update'),
 } as unknown as Api
 
 contextBridge.exposeInMainWorld('api', api)

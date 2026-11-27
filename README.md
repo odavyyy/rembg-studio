@@ -10,6 +10,8 @@ Images are processed on your computer and are not uploaded anywhere.
 
 **English** · [Português (Brasil)](README.pt-BR.md)
 
+[Privacy policy](PRIVACY.md) · [Usage notes](TERMS.md) · [Model licenses](MODEL_LICENSES.md) · [Code signing policy](CODE_SIGNING_POLICY.md)
+
 > **The app's interface is in Brazilian Portuguese only.**
 >
 > **rembg is not bundled.** You install it once (see [Install](#install)); the app finds it and uses it.
@@ -28,6 +30,7 @@ Images are processed on your computer and are not uploaded anywhere.
 - Output folder, file name pattern, per-image rename, auto-save. Existing files are not replaced without asking.
 - Recent items history (thumbnails and file paths, not copies of your images).
 - Diagnostics page with a real GPU test.
+- Manual in-app updates from the official GitHub releases, with progress, cancel and SHA-256 verification.
 
 ## Screenshots
 
@@ -78,15 +81,15 @@ From the [Releases](../../releases) page, pick one:
 
 | File | What it is |
 |---|---|
-| `RembgStudio-Setup-1.0.0.exe` | Installer (per user, you choose the folder). **Not tested yet.** |
-| `RembgStudio-1.0.0-portatil.exe` | Single portable file. It unpacks on every launch, so it starts a bit slower. |
-| `RembgStudio-1.0.0-win-x64.zip` | Extract anywhere and run `Rembg Studio.exe`. |
+| `RembgStudio-Setup-1.1.0.exe` | Installer (per user, you choose the folder). **Not tested yet.** |
+| `RembgStudio-1.1.0-portatil.exe` | Single portable file. It unpacks on every launch, so it starts a bit slower. |
+| `RembgStudio-1.1.0-win-x64.zip` | Extract anywhere and run `Rembg Studio.exe`. |
 
 The builds are **not code-signed**, so Windows SmartScreen may warn you. Verify your download against
 `SHA256SUMS.txt`:
 
 ```powershell
-Get-FileHash .\RembgStudio-1.0.0-portatil.exe -Algorithm SHA256
+Get-FileHash .\RembgStudio-1.1.0-portatil.exe -Algorithm SHA256
 ```
 
 ### 3. First run
@@ -96,19 +99,33 @@ somewhere else, open **Configurações → Diagnóstico → Escolher python.exe�
 
 > Only choose a `python.exe` you trust: the app runs it.
 
-## GPU and CPU
+## Updating
 
-The CUDA libraries installed by pip live inside the rembg environment, where ONNX Runtime on Windows does not
-find them by itself. The app adds those folders to `PATH` **for its own rembg process only**. It does not edit
-your Python environment or system settings. (The plain `rembg` command line may still fall back to the CPU on
-the same machine; that is outside this app.)
+Open **Sobre** (About) → **Verificar atualizações**. Nothing is checked automatically. The app looks only at the
+latest published, stable release of this repository (drafts, pre-releases and older versions are ignored),
+downloads the file that matches your installation, checks its size and its SHA-256 against `SHA256SUMS.txt` (and
+GitHub's own digest when present), and asks before doing anything.
 
-- **Configurações → Testar GPU de verdade** loads a model and reports where it actually ran. A listed CUDA
-  provider alone does not prove the GPU works.
-- If the GPU cannot be used, the app shows a warning and runs on the CPU, which is slower. The forced
-  "CPU only" mode was tested on the GPU installation.
-- Heavy models become much slower when other programs occupy video memory. On the test machine, with most of
-  the 16 GB in use, large models took from several seconds to more than a minute per image.
+| You use | What the update does |
+|---|---|
+| Portable `.exe` | Copies the new `.exe` **next to** the current one, starts it and closes the old one. The old file is kept; delete it when you like. Shortcuts that point to the old file must be updated by you. |
+| Installer | Opens the new installer and closes the app. Follow the installer. |
+| ZIP folder | Saves the new ZIP where you choose. Extract it to a new folder yourself. |
+
+Only the app is updated: Python, rembg, CUDA, drivers, models, settings, history and your files are left alone.
+Unsaved results are lost when the app restarts (you are warned), and installing is refused while the queue is busy.
+Version 1.0.0 has no updater, so moving from it to 1.1.0 is a manual download.
+
+Limits: the checksums come from the same release as the files, so they catch damaged downloads but do **not** prove
+authorship if the repository or account were compromised. Builds are not signed yet. Once a signed version is in
+use, the updater also requires a valid signature from the same signer. The updater has never been run against a real
+published release (see [Status and testing](#status-and-testing)).
+
+### Uninstalling
+
+Installer: **Windows Settings → Apps → Rembg Studio → Uninstall**. Portable or ZIP: delete the files. In every case
+your data stays in `%APPDATA%\Rembg Studio` until you delete that folder; models stay in
+`%USERPROFILE%\.rembg`.
 
 ## Models
 
@@ -173,39 +190,50 @@ on 2026-11-27. It is not legal advice.
 
 ## Privacy and local data
 
-The app's own code makes no network requests, and there is no telemetry. rembg downloads model files when
-needed. (Network traffic was not monitored with an external tool.)
+Images are processed on your computer. The app has no accounts, analytics or ads, and the maintainer receives no
+data. It uses the network only when you ask: checking or downloading an update, and rembg downloading a model you
+chose. It asks ONNX Runtime to disable telemetry in the process it starts. History, **file paths** and **thumbnails
+of results** are stored unencrypted in `%APPDATA%\Rembg Studio`. Details, measurements and their limits are in the
+[privacy policy](PRIVACY.md).
 
-Data is stored in `%APPDATA%\Rembg Studio`: settings, usage times per model, the history (**file paths of your
-images** and **small thumbnails of results**), a temporary cache of results that is cleared at start-up, and
-Electron's own profile files. **Limpar histórico** removes history entries and thumbnails; delete the folder to
-remove everything. Your original images are never modified or deleted by the app.
+## Code signing policy
+
+Builds are **not code-signed** and no signing application has been approved. See the
+[code signing policy](CODE_SIGNING_POLICY.md).
 
 ## Status and testing
 
-Everything below refers to version 1.0.0 on the single test machine described in Requirements.
+Version 1.1.0, one test machine (see Requirements).
 
-**Tested automatically** against the app extracted from `RembgStudio-1.0.0-win-x64.zip` (built from a clean copy
-of the source), with the real rembg installation and GPU (`tests/e2e.mjs`, 32 checks): start-up, import in the five formats, background removal, transparency of the
-saved file, protection of originals, batch processing one at a time, existing-file handling, naming and rename,
-switching models (`isnet-general-use`, `birefnet-general-lite`, `bria-rmbg`), the GPU test, forced CPU mode,
-alpha matting, mask clean-up, halo removal and mask-only export, the matting size limit, the 250 MP limit, ICC profile,
-the restrictions on which files and folders the app can open or reveal (Windows calls stubbed),
-invalid and truncated files, an unknown model, a 6000×4000 image, cancel, a killed rembg process, auto-process
-and auto-save, history, the model list, restart and persistence, no leftover Python processes after closing,
-and start-up on a setup where rembg cannot be found (simulated by hiding it through environment variables).
+**Tested on the packaged app with the real rembg installation and GPU** (`tests/e2e.mjs`, 33 checks): start-up,
+import in the five formats, removal and transparency, protection of originals, batch processing, existing-file
+handling and naming, three models (`isnet-general-use`, `birefnet-general-lite`, `bria-rmbg`) and the BRIA notice,
+the GPU test, forced CPU mode, mask options and alpha matting, both size limits, ICC profile, invalid files,
+cancel, a killed rembg process, history, settings persistence, no leftover Python processes, and a setup where rembg
+cannot be found.
 
-**Simulated:** native open/save dialogs are replaced by stubs; drag and drop uses a drag event injected through
-Chrome DevTools Protocol, not a real drag from Explorer.
+**Updater** (`tests/update-e2e.mjs`, 39 checks against packaged builds):
+- *Real:* the portable 1.1.0 downloaded a locally served 1.2.0 test build, verified it, started it and exited;
+  the old file, settings, history and a saved result were unchanged, and no Python process was left. The rembg
+  environment, uv's Python, the models, the real app data folder, the CUDA path file and the driver version were
+  unchanged (file lists, sizes and timestamps).
+- *Simulated:* the update server (no newer version, older version, draft, pre-release, wrong tag or architecture,
+  rate limit, server and network errors, cancel, cut or short download, wrong or missing checksum, digest mismatch,
+  invalid file, foreign URL or redirect, tampered file) and native dialogs, including the confirmation in the real
+  portable test.
+- *Real GitHub:* the packaged app's update check, which reported no published release. The asset fields the
+  updater relies on and the download redirect hosts were also compared, with `curl`, against another published
+  release; the app itself has never downloaded from a published release.
 
-**Partially tested:** the portable `.exe` was only launched (rembg started) and closed. The CUDA DLL loading
-was verified separately by starting Python with `.pth` files disabled: without the app's step the session ran on
-the CPU, with it on CUDA. The end-to-end run itself used a machine where a manual DLL path fix also exists.
+**Pure update rules:** `tests/unit.mjs`.
 
-**Not tested:** the installer; a download from GitHub; ViTMatte; downloading a model from the app; the other 13
-models; "Salvar em…", "Processar selecionadas", "Salvar selecionadas", "Remover selecionadas"; choosing a
-different `python.exe`; keyboard shortcuts; the "follow Windows" theme; a CPU-only rembg install; other
-Windows versions and other GPUs; a second computer.
+**Other simulations:** open/save dialogs are stubbed; drag and drop is injected through Chrome DevTools Protocol.
+
+**Not tested:** the installer, including updating an installed copy (only the app side was exercised, with the
+installer never run); downloading from a real published release, including GitHub's CDN redirects; signature
+checking with a signed build; the release workflow; the ZIP and portable downloaded from GitHub; ViTMatte;
+downloading a model from the app; the other 13 models; some batch buttons; choosing another `python.exe`; keyboard
+shortcuts; the "follow Windows" theme; CPU-only installs; other computers, GPUs or Windows versions.
 
 ## Build from source
 
@@ -226,12 +254,16 @@ npm start
 | `npm run notices` | Regenerate `THIRD_PARTY_NOTICES.md`. |
 | `npm run art` | Re-render `docs/banner.png` from `docs/art/banner.html`. |
 | `node tests/e2e.mjs <empty-folder>` | End-to-end tests. Pass a packaged `.exe` as a second argument to test it. |
+| `node tests/unit.mjs` | Update rules (no GPU needed). |
+| `node tests/update-e2e.mjs <empty-folder> release <next-portable.exe>` | Updater tests on packaged builds. Build the second portable with `node scripts/dist.mjs --app-version=1.2.0 --output=release-next --targets=portable`. |
+| `node tests/netaudit.mjs <empty-folder>` | Observe the app's network use. |
 
 - If the Electron binary is missing after `npm ci`, run `node node_modules/electron/install.js`.
 - **Long paths:** NSIS fails with `!include: could not open file` when the project path is long. Build from a
   short folder such as `C:\src\rembg-studio`.
 - `npm audit` reports moderate advisories in `minimatch`, pulled in by electron-builder. It is build tooling and
   is not part of the packaged app; the fix npm offers is a breaking downgrade, so it was not applied.
+- `npm run dist` runs `scripts/dist.mjs`, which stops electron-builder from adding its `elevate.exe` helper.
 - While building the installer, electron-builder runs a temporary NSIS stub that only writes the uninstaller
   file into `release/`.
 - The tests need rembg with a working NVIDIA GPU and the three models listed above already downloaded. Close

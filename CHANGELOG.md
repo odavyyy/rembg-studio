@@ -2,6 +2,22 @@
 
 This project follows [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] - unreleased
+
+### Added
+
+- In-app updates from the official GitHub releases (manual check), with progress, cancel, SHA-256 verification and
+  confirmation; side-by-side replacement for the portable version.
+- **Sobre** (About) page with version, updates, documents and support links.
+- Privacy policy, usage notes, model license table and code signing policy, included in the app.
+- One-time license notice before using or downloading `bria-rmbg`.
+- Release workflow prepared for optional code signing (not yet run).
+
+### Changed
+
+- The app asks ONNX Runtime to disable telemetry in the rembg process it starts.
+- The portable package no longer contains `elevate.exe`.
+
 ## [1.0.0] - 2026-11-27
 
 First public release.
