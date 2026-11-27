@@ -1,0 +1,31 @@
+<!doctype html>
+<meta charset="utf-8" />
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { width: 1280px; height: 640px; overflow: hidden; background: radial-gradient(900px 600px at 78% 40%, #1d1a33, #0c0d10 70%); color: #e8eaf0; font-family: 'Segoe UI', sans-serif; display: flex; align-items: center; }
+  .text { width: 600px; padding-left: 72px; }
+  .brand { display: flex; align-items: center; gap: 18px; }
+  .brand img { width: 72px; height: 72px; }
+  h1 { font-size: 60px; line-height: 1.05; letter-spacing: -1px; margin-top: 28px; }
+  p { font-size: 24px; color: #9aa1b2; line-height: 1.45; margin-top: 20px; }
+  .chips { display: flex; gap: 10px; margin-top: 30px; flex-wrap: wrap; }
+  .chips span { border: 1px solid #343949; border-radius: 99px; padding: 7px 16px; font-size: 17px; color: #cfd3df; }
+  .stage { position: absolute; right: 64px; top: 124px; width: 588px; height: 392px; border-radius: 18px; overflow: hidden; box-shadow: 0 30px 80px #000a; border: 1px solid #343949; background: conic-gradient(#2a2d35 25%, #1c1f25 0 50%, #2a2d35 0 75%, #1c1f25 0) 0 0 / 28px 28px; }
+  .stage img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .before { clip-path: inset(0 50% 0 0); }
+  .after { clip-path: inset(0 0 0 50%); }
+  .line { position: absolute; left: calc(50% - 1.5px); top: 0; bottom: 0; width: 3px; background: #fff; box-shadow: 0 0 12px #000a; }
+  .knob { position: absolute; left: calc(50% - 22px); top: 174px; width: 44px; height: 44px; border-radius: 50%; background: #fff; color: #111; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; }
+</style>
+<div class="text">
+  <div class="brand"><img src="../../build/icon.png" alt="" /><strong style="font-size: 30px">Rembg Studio</strong></div>
+  <h1>Background removal<br />on your own PC</h1>
+  <p>A Windows desktop app for rembg, with GPU acceleration and batch processing.</p>
+  <div class="chips"><span>Local processing</span><span>NVIDIA CUDA or CPU</span><span>Transparent PNG</span></div>
+</div>
+<div class="stage">
+  <img class="before" src="coffee.png" alt="" />
+  <img class="after" src="coffee-cutout.png" alt="" />
+  <div class="line"></div>
+  <div class="knob">‹›</div>
+</div>

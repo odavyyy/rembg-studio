@@ -1,0 +1,37 @@
+# dependencies
+node_modules/
+
+# build output and release files
+dist/
+dist-electron/
+release/
+*.exe
+*.zip
+*.7z
+*.blockmap
+
+# models, Python environments and caches (never part of the source)
+*.onnx
+.rembg/
+.u2net/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# test runs, logs and local app data
+test-run/
+logs/
+*.log
+userdata/
+
+# OS / editor
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# never commit secrets
+.env
+.env.*

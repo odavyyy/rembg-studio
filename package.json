@@ -1,0 +1,102 @@
+{
+  "name": "rembg-studio",
+  "productName": "Rembg Studio",
+  "version": "1.0.0",
+  "description": "A Windows desktop app for background removal using rembg, with GPU acceleration and batch processing.",
+  "author": "odavyyy",
+  "license": "MIT",
+  "homepage": "https://github.com/odavyyy/rembg-studio",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/odavyyy/rembg-studio.git"
+  },
+  "private": true,
+  "main": "dist-electron/main.js",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "build:main": "node scripts/build-main.mjs",
+    "build:renderer": "vite build",
+    "build": "tsc --noEmit -p tsconfig.json && npm run build:main && npm run build:renderer",
+    "start": "npm run build && electron .",
+    "dev": "node scripts/dev.mjs",
+    "dist": "npm run build && electron-builder --win --publish never",
+    "test:e2e": "node tests/e2e.mjs",
+    "notices": "node scripts/notices.mjs",
+    "art": "electron scripts/render-art.cjs"
+  },
+  "devDependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.5",
+    "@types/node": "^26.6.11",
+    "@types/react": "^19.3.3",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "electron": "^45.5.0",
+    "electron-builder": "^26.18.0",
+    "esbuild": "^0.28.2",
+    "lucide-react": "^1.81.0",
+    "playwright-core": "^1.65.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^7.0.2",
+    "vite": "^8.4.0",
+    "zustand": "^5.1.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "electron-winstaller@5.4.0": true,
+    "electron@45.5.0": true
+  },
+  "build": {
+    "appId": "io.github.odavyyy.rembgstudio",
+    "productName": "Rembg Studio",
+    "copyright": "Copyright © 2026 odavyyy",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**",
+      "dist-electron/**",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "python/worker.py",
+        "to": "python/worker.py"
+      },
+      {
+        "from": "LICENSE",
+        "to": "LICENSE.txt"
+      },
+      {
+        "from": "THIRD_PARTY_NOTICES.md",
+        "to": "THIRD_PARTY_NOTICES.md"
+      }
+    ],
+    "publish": null,
+    "win": {
+      "target": [
+        "nsis",
+        "portable",
+        "zip"
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "RembgStudio-${version}-win-x64.${ext}"
+    },
+    "nsis": {
+      "artifactName": "RembgStudio-Setup-${version}.exe",
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false,
+      "packElevateHelper": false
+    },
+    "portable": {
+      "artifactName": "RembgStudio-${version}-portatil.exe"
+    }
+  }
+}
