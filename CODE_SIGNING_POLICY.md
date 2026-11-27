@@ -31,7 +31,7 @@ else has been given write access.
   with AI assistance under the maintainer's direction (see the README).
 - **Today:** from version 1.1.0, `.github/workflows/release.yml` builds the packages on GitHub-hosted runners from
   the version tag and creates a **draft** release that the maintainer publishes by hand. The GPU tests cannot run
-  there; the maintainer's computer is used for them (see "Status and testing" in the README).
+  there; the maintainer's computer is used for them (see "Status and testing" in [README.en.md](README.en.md)).
 - **Signing:** the workflow has signing steps, which are switched off and have never been run.
 - Dependencies are pinned by `package-lock.json`.
 

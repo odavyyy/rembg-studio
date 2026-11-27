@@ -63,7 +63,7 @@ redistributed by this project; each keeps its own license.
 
 **No model is included in this repository or in the builds.** rembg downloads a model file when you
 first use it. Model weights have their own licenses, independent of rembg's and of this project's.
-See the model license table in the README before using any model, especially commercially.
+See MODEL_LICENSES.md before using any model, especially commercially.
 
 ## Images used in screenshots, the banner and tests
 

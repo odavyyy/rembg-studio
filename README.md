@@ -1,258 +1,260 @@
 <p align="center">
-  <img src="docs/banner.png" alt="Rembg Studio: background removal on your own PC" width="100%">
+  <img src="docs/banner.pt-BR.png" alt="Rembg Studio: remoção de fundo no seu próprio PC" width="100%">
 </p>
 
 # Rembg Studio
 
+<p align="right">
+  <a href="README.en.md"><img src="docs/botoes/idioma-english.svg" alt="Read this page in English" width="190"></a>
+</p>
+
 <!-- botoes:inicio (gerado por scripts/botoes.mjs) -->
 <p align="center">
-  <a href="https://github.com/odavyyy/rembg-studio/releases/download/v1.1.0/RembgStudio-Setup-1.1.0.exe"><img src="docs/botoes/download-main.svg" alt="Download the installer (v1.1.0)" width="330"></a>
+  <a href="https://github.com/odavyyy/rembg-studio/releases/download/v1.1.0/RembgStudio-Setup-1.1.0.exe"><img src="docs/botoes/baixar-principal.svg" alt="Baixar o instalador (v1.1.0)" width="330"></a>
   &nbsp;&nbsp;
-  <a href="https://github.com/odavyyy/rembg-studio/releases/download/v1.1.0/RembgStudio-1.1.0-portatil.exe"><img src="docs/botoes/download-portable.svg" alt="Download the portable version (v1.1.0)" width="330"></a>
+  <a href="https://github.com/odavyyy/rembg-studio/releases/download/v1.1.0/RembgStudio-1.1.0-portatil.exe"><img src="docs/botoes/baixar-secundario.svg" alt="Baixar a versão portátil (v1.1.0)" width="330"></a>
 </p>
 
 <p align="center">
-  Windows 64-bit · requires <a href="#install">rembg installed</a> · not code-signed · these two .exe files have not been tested (<a href="https://github.com/odavyyy/rembg-studio/releases/download/v1.1.0/RembgStudio-1.1.0-win-x64.zip">the .zip, 147 MB, has</a>) · <a href="../../releases/latest">all versions</a>
+  Windows 64 bits · precisa do <a href="#instalação">rembg instalado</a> · sem assinatura digital · estes dois .exe ainda não foram testados (<a href="https://github.com/odavyyy/rembg-studio/releases/download/v1.1.0/RembgStudio-1.1.0-win-x64.zip">o .zip, 147 MB, foi</a>) · <a href="../../releases/latest">todas as versões</a>
 </p>
 <!-- botoes:fim -->
 
 <p align="center">
-  <strong>English</strong> · <a href="README.pt-BR.md"><strong>Leia em Português (Brasil)</strong></a>
+  <a href="PRIVACY.md">Privacidade</a> · <a href="TERMS.md">Condições de uso</a> · <a href="MODEL_LICENSES.md">Licenças dos modelos</a> · <a href="CODE_SIGNING_POLICY.md">Política de assinatura de código (Code signing policy)</a>
 </p>
 
-A Windows desktop app for background removal using [rembg](https://github.com/danielgatis/rembg), with GPU
-acceleration and batch processing. Drop images in, compare before and after, and export transparent PNGs.
-Images are processed on your computer and are not uploaded anywhere.
+Aplicativo para Windows que remove o fundo de imagens usando o [rembg](https://github.com/danielgatis/rembg), com
+aceleração por GPU e processamento em lote. Arraste as imagens, compare o antes e o depois e exporte PNGs
+transparentes. As imagens são processadas no seu computador e não são enviadas para lugar nenhum.
 
-[Privacy policy](PRIVACY.md) · [Usage notes](TERMS.md) · [Model licenses](MODEL_LICENSES.md) · [Code signing policy](CODE_SIGNING_POLICY.md)
-
-> **The app's interface is in Brazilian Portuguese only.**
+> **A interface do app é em português.**
 >
-> **rembg is not bundled.** You install it once (see [Install](#install)); the app finds it and uses it.
+> **O rembg não vem junto.** Você o [instala uma vez](#instalação), e o app o encontra e usa.
 
-## Features
+## Funcionalidades
 
-- Drag and drop files or a folder (first level only), or use the file picker. PNG, JPEG, WebP, BMP and TIFF.
-- Before/after slider, original and result views, zoom, pan, fit to screen.
-- Preview backgrounds (checkerboard, black, white, gray). They never change the exported file.
-- Batch view with thumbnails, resolution, size, model, status, time and result. One image is processed at a
-  time, with one model loaded at a time.
-- Cancel, retry and reprocess with another model.
-- Model picker built from what your rembg installation reports.
-- Advanced options: alpha matting, ViTMatte edge refinement, mask clean-up, color halo removal, mask-only export.
-- PNG export with transparency. The embedded color profile (ICC) is kept for RGB sources.
-- Output folder, file name pattern, per-image rename, auto-save. Existing files are not replaced without asking.
-- Recent items history (thumbnails and file paths, not copies of your images).
-- Diagnostics page with a real GPU test.
-- Manual in-app updates from the official GitHub releases, with progress, cancel and SHA-256 verification.
+- Arraste arquivos ou uma pasta (só o primeiro nível), ou use o seletor. PNG, JPEG, WebP, BMP e TIFF.
+- Controle deslizante de antes e depois, visão original e final, zoom, arraste e ajuste à tela.
+- Fundos de prévia (quadriculado, preto, branco e cinza). Eles nunca mudam o arquivo exportado.
+- Lote com miniatura, resolução, tamanho, modelo, status, tempo e resultado. Uma imagem é processada por vez, com
+  um modelo carregado por vez.
+- Cancelar, tentar de novo e reprocessar com outro modelo.
+- Lista de modelos montada a partir do que a sua instalação do rembg informa.
+- Opções avançadas: alpha matting, refinamento de bordas com ViTMatte, limpeza da máscara, remoção de halo
+  colorido e exportar só a máscara.
+- Exportação em PNG transparente. O perfil de cor (ICC) é mantido em imagens RGB.
+- Pasta de saída, padrão de nomes, renomear cada imagem e salvar automaticamente. Nada é substituído sem perguntar.
+- Histórico de recentes (miniaturas e caminhos, sem cópias das suas imagens).
+- Página de diagnóstico com teste real da GPU.
+- Atualização manual pelo próprio app, com progresso, cancelamento e conferência SHA-256.
 
-## Screenshots
+## Telas
 
-| Before / after | Batch |
+| Antes e depois | Lote |
 |---|---|
-| ![Workspace with the before/after slider](docs/screenshots/workspace.png) | ![Batch queue](docs/screenshots/batch.png) |
-| **Models** | **Recent items** |
-| ![Model list](docs/screenshots/models.png) | ![History](docs/screenshots/recents.png) |
-| **Settings** | **Start screen** |
-| ![Settings](docs/screenshots/settings.png) | ![Empty state](docs/screenshots/empty.png) |
+| ![Tela principal com o controle de antes e depois](docs/screenshots/workspace.png) | ![Fila em lote](docs/screenshots/batch.png) |
+| **Modelos** | **Recentes** |
+| ![Lista de modelos](docs/screenshots/models.png) | ![Histórico](docs/screenshots/recents.png) |
+| **Configurações** | **Tela inicial** |
+| ![Configurações](docs/screenshots/settings.png) | ![Tela vazia](docs/screenshots/empty.png) |
 
-## Requirements
+## Requisitos
 
-- Windows 64-bit. **Tested only on Windows 11 Pro (build 26300).**
-- rembg installed in a [uv](https://docs.astral.sh/uv/) tool environment (or another Python environment you point
-  the app to). rembg 2.0.88 requires Python 3.11 or newer; the tested setup uses Python 3.12.
-- For GPU acceleration: an NVIDIA GPU with a recent driver. **Tested only on an RTX 5060 Ti (16 GB),
-  driver 621.x.** AMD and Intel GPU acceleration is not supported or tested.
-- Disk space for models (the three used in testing take about 1.4 GB).
+- Windows 64 bits. **Testado só no Windows 11 Pro (build 26300).**
+- rembg instalado num ambiente do [uv](https://docs.astral.sh/uv/) (ou em outro ambiente Python que você indicar
+  no app). O rembg 2.0.88 exige Python 3.11 ou mais novo; o ambiente testado usa 3.12.
+- Para usar a GPU: placa NVIDIA com driver recente. **Testado só numa RTX 5060 Ti de 16 GB, driver 621.x.**
+  Aceleração em placas AMD e Intel não é suportada nem foi testada.
+- Espaço em disco para os modelos (os três usados nos testes ocupam cerca de 1,4 GB).
 
-## Install
+## Instalação
 
-### 1. Install rembg
+### 1. Instale o rembg
 
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/), for example:
+Instale o [uv](https://docs.astral.sh/uv/getting-started/installation/), por exemplo:
 
 ```powershell
 winget install astral-sh.uv
 ```
 
-Then install **one** of the two variants.
+Depois instale **uma** das duas variantes.
 
-NVIDIA GPU (downloads over 1 GB of CUDA libraries). These are the versions this app was tested with:
+Com GPU NVIDIA (baixa mais de 1 GB de bibliotecas CUDA; são as versões testadas):
 
 ```powershell
 uv tool install "rembg[gpu,cli]==2.0.88" --python 3.12 --with "onnxruntime-gpu[cuda,cudnn]==1.32.0"
 ```
 
-CPU only (this package variant has not been tested with the app):
+Só CPU (essa variante do pacote não foi testada com o app):
 
 ```powershell
 uv tool install "rembg[cpu,cli]==2.0.88" --python 3.12
 ```
 
-### 2. Get the app
+### 2. Baixe o app
 
-From the [Releases](../../releases) page, pick one:
+Use os botões no topo ou a página de [Releases](../../releases).
 
-| File | What it is |
-|---|---|
-| `RembgStudio-Setup-1.1.0.exe` | Installer (per user, you choose the folder). **Not tested.** |
-| `RembgStudio-1.1.0-portatil.exe` | Single portable file. It unpacks on every launch, so it starts a bit slower. **The published file was not tested.** |
-| `RembgStudio-1.1.0-win-x64.zip` | Extract anywhere and run `Rembg Studio.exe`. **This published package was tested.** |
+| Arquivo | O que é | O arquivo publicado foi testado? |
+|---|---|---|
+| `RembgStudio-Setup-1.1.0.exe` | Instalador (por usuário; você escolhe a pasta). | **Não** |
+| `RembgStudio-1.1.0-portatil.exe` | Arquivo único. Descompacta a cada abertura, por isso abre um pouco mais devagar. | **Não** |
+| `RembgStudio-1.1.0-win-x64.zip` | Extraia onde quiser e abra o `Rembg Studio.exe`. | **Sim** |
 
-The builds are **not code-signed**, so Windows SmartScreen may warn you. Verify your download against
-`SHA256SUMS.txt`:
+Os executáveis **não têm assinatura digital**, então o SmartScreen do Windows pode avisar ("Mais informações" e
+depois "Executar assim mesmo"). Antes disso, confira o arquivo com o `SHA256SUMS.txt`:
 
 ```powershell
-Get-FileHash .\RembgStudio-1.1.0-portatil.exe -Algorithm SHA256
+Get-FileHash .\RembgStudio-1.1.0-win-x64.zip -Algorithm SHA256
 ```
 
-### 3. First run
+### 3. Primeira abertura
 
-The app looks for `%APPDATA%\uv\tools\rembg\Scripts\python.exe`, then asks `uv tool dir`. If rembg lives
-somewhere else, open **Configurações → Diagnóstico → Escolher python.exe…**.
+O app procura `%APPDATA%\uv\tools\rembg\Scripts\python.exe` e depois consulta `uv tool dir`. Se o rembg estiver em
+outro lugar, use **Configurações → Diagnóstico → Escolher python.exe…**.
 
-> Only choose a `python.exe` you trust: the app runs it.
+> Escolha apenas um `python.exe` em que você confia: o app vai executá-lo.
 
-## Updating
+## Atualizações
 
-Open **Sobre** (About) → **Verificar atualizações**. Nothing is checked automatically. The app looks only at the
-latest published, stable release of this repository (drafts, pre-releases and older versions are ignored),
-downloads the file that matches your installation, checks its size and its SHA-256 against `SHA256SUMS.txt` (and
-GitHub's own digest when present), and asks before doing anything.
+Em **Sobre → Verificar atualizações**. Nada é verificado sozinho. O app considera só a versão estável publicada
+mais recente (rascunhos, pré-lançamentos e versões antigas são ignorados), baixa o arquivo do seu tipo de
+instalação, confere o tamanho e o SHA-256 com o `SHA256SUMS.txt` (e com o resumo do próprio GitHub, quando houver)
+e pede confirmação antes de qualquer coisa.
 
-| You use | What the update does |
+| Você usa | O que a atualização faz |
 |---|---|
-| Portable `.exe` | Copies the new `.exe` **next to** the current one, starts it and closes the old one. The old file is kept; delete it when you like. Shortcuts that point to the old file must be updated by you. |
-| Installer | Opens the new installer and closes the app. Follow the installer. |
-| ZIP folder | Saves the new ZIP where you choose. Extract it to a new folder yourself. |
+| Portátil | Copia o `.exe` novo **ao lado** do atual, abre o novo e fecha o antigo. O antigo é mantido; apague quando quiser. Atalhos que apontam para ele precisam ser atualizados por você. |
+| Instalador | Abre o instalador novo e fecha o app. Siga o instalador. |
+| Pasta do ZIP | Salva o ZIP novo onde você escolher. Extraia numa pasta nova. |
 
-Only the app is updated: Python, rembg, CUDA, drivers, models, settings, history and your files are left alone.
-Unsaved results are lost when the app restarts (you are warned), and installing is refused while the queue is busy.
-Version 1.0.0 has no updater, so moving from it to 1.1.0 is a manual download.
+Só o app é atualizado: Python, rembg, CUDA, drivers, modelos, configurações, histórico e seus arquivos não são
+tocados. Resultados não salvos se perdem quando o app reinicia (há um aviso), e a instalação é recusada com a fila
+ocupada. A versão 1.0.0 não tem atualizador.
 
-Limits: the checksums come from the same release as the files, so they catch damaged downloads but do **not** prove
-authorship if the repository or account were compromised. Builds are not signed yet. Once a signed version is in
-use, the updater also requires a valid signature from the same signer. The update check has run against the published
-1.1.0 release, but the app has never downloaded an update from a published release (see
-[Status and testing](#status-and-testing)).
+Limites: as somas vêm da mesma release dos arquivos. Elas detectam download corrompido, mas **não provam autoria**
+se a conta ou o repositório forem invadidos. Quando houver uma versão assinada, o atualizador também vai exigir
+assinatura válida do mesmo emissor. A verificação já rodou contra a release 1.1.0 publicada, mas o app nunca baixou
+uma atualização de uma release publicada.
 
-### Uninstalling
+### Como desinstalar
 
-Installer: **Windows Settings → Apps → Rembg Studio → Uninstall**. Portable or ZIP: delete the files. In every case
-your data stays in `%APPDATA%\Rembg Studio` until you delete that folder; models stay in
+Instalador: **Configurações do Windows → Aplicativos → Rembg Studio → Desinstalar**. Portátil ou ZIP: apague os
+arquivos. Nos dois casos seus dados ficam em `%APPDATA%\Rembg Studio` até você apagar a pasta; os modelos ficam em
 `%USERPROFILE%\.rembg`.
 
-## Models
+## GPU e CPU
 
-With the default `gpu,cli` extras, rembg 2.0.88 exposes **16 local models** that the app lists:
+No Windows, o ONNX Runtime não encontra sozinho as DLLs do CUDA instaladas pelo pip. O app adiciona essas pastas
+ao `PATH` **somente do processo dele**, sem alterar seu ambiente Python nem o Windows. (O comando `rembg` no
+terminal ainda pode usar a CPU no mesmo computador; isso está fora do app.)
 
-`isnet-general-use` (default) · `isnet-anime` · `u2net` · `u2netp` · `u2net_human_seg` · `u2net_cloth_seg` ·
+- **Configurações → Testar GPU de verdade** carrega um modelo e informa onde ele rodou de fato. Aparecer "CUDA" na
+  lista não prova que a GPU funciona.
+- Se a GPU não puder ser usada, o app avisa e usa a CPU, que é mais lenta. O modo "Somente CPU" foi testado na
+  instalação com GPU.
+- Modelos pesados ficam muito mais lentos quando outros programas ocupam a memória da placa. No PC de teste, com a
+  maior parte dos 16 GB em uso, modelos grandes levaram de alguns segundos a mais de um minuto por imagem.
+
+## Modelos
+
+Com os extras `gpu,cli`, o rembg 2.0.88 oferece **16 modelos locais**, que o app lista:
+
+`isnet-general-use` (padrão) · `isnet-anime` · `u2net` · `u2netp` · `u2net_human_seg` · `u2net_cloth_seg` ·
 `silueta` · `birefnet-general` · `birefnet-general-lite` · `birefnet-portrait` · `birefnet-dis` ·
 `birefnet-hrsod` · `birefnet-cod` · `birefnet-massive` · `birefnet-dynamic` · `bria-rmbg`
 
-`birefnet-general-fp16` appears only if rembg's `fp16` extra is installed (not tested). Models that need your own
-file or point prompts (`u2net_custom`, `dis_custom`, `ben_custom`, `sam`) and cloud services (`withoutbg`,
-`atlascloud`) are intentionally left out.
+O `birefnet-general-fp16` só aparece com o extra `fp16` do rembg (não testado). Ficam de fora, de propósito, os
+modelos que pedem arquivo próprio ou pontos marcados (`u2net_custom`, `dis_custom`, `ben_custom`, `sam`) e os
+serviços na nuvem (`withoutbg`, `atlascloud`).
 
-**Only `isnet-general-use`, `birefnet-general-lite` and `bria-rmbg` were run during testing.** The speed and
-quality bars in the app are rough, subjective ratings, not benchmarks. `u2net_cloth_seg` returns three cutouts
-stacked vertically (upper body, lower body, full), so the before/after slider is not available for it.
+**Nos testes só rodaram `isnet-general-use`, `birefnet-general-lite` e `bria-rmbg`.** As barras de velocidade e
+qualidade do app são notas aproximadas, não medições. O `u2net_cloth_seg` devolve três recortes empilhados (parte
+de cima, parte de baixo e inteiro), por isso o antes e depois não fica disponível para ele.
 
-### Downloading more models
+### Como baixar outros modelos
 
-A missing model is downloaded the first time you use it, or from the **Modelos** page (download button). From a
+Um modelo que falta é baixado no primeiro uso ou pela página **Modelos** (esse botão não foi testado). Pelo
 terminal:
 
 ```powershell
 rembg d isnet-anime
 ```
 
-Models are stored in `%USERPROFILE%\.rembg\models`. Downloads come from the URLs defined by rembg.
-Downloading from inside the app has not been tested.
+Eles ficam em `%USERPROFILE%\.rembg\models` e são baixados dos endereços definidos pelo rembg.
 
-### Model licenses: read before using results commercially
+### Licenças dos modelos: leia antes de usar comercialmente
 
-**No model is included in this project or its releases.** Model weights have their own licenses, independent of
-rembg's MIT license and of this app's MIT license. The table reports what the upstream pages stated when checked
-on 2026-11-27. It is not legal advice.
+**Nenhum modelo está incluído no projeto nem nas releases.** Cada um tem licença própria, que não muda com a licença
+MIT do rembg nem com a do app.
 
-| Model | Upstream | Code license | Weights license |
-|---|---|---|---|
-| `bria-rmbg` (RMBG 2.0) | [briaai/RMBG-2.0](https://huggingface.co/briaai/RMBG-2.0) | not applicable | ⚠️ **Non-commercial only** (CC BY-NC 4.0 in the model card; tagged `bria-rmbg-2.0`). **Commercial use requires an agreement with BRIA.** |
-| `birefnet-*` | [ZhengPeng7/BiRefNet](https://github.com/ZhengPeng7/BiRefNet) | MIT | MIT on the main [Hugging Face page](https://huggingface.co/ZhengPeng7/BiRefNet); variant pages were not checked |
-| `u2net`, `u2netp`, `u2net_human_seg` | [xuebinqin/U-2-Net](https://github.com/xuebinqin/U-2-Net) | Apache-2.0 | not stated |
-| `silueta` | [U-2-Net issue 295](https://github.com/xuebinqin/U-2-Net/issues/295) (link given by rembg) | not verified | not stated / not verified |
-| `u2net_cloth_seg` | [levindabhi/cloth-segmentation](https://github.com/levindabhi/cloth-segmentation) | MIT | not stated |
-| `isnet-general-use` | [xuebinqin/DIS](https://github.com/xuebinqin/DIS) | Apache-2.0 | not stated; the DIS5K dataset has separate terms (not reviewed) |
-| `isnet-anime` | [SkyTNT/anime-segmentation](https://github.com/SkyTNT/anime-segmentation) | Apache-2.0 | not stated in the repository README |
-| ViTMatte (optional refinement) | [hustvl/ViTMatte](https://github.com/hustvl/ViTMatte) | MIT | not stated |
+- ⚠️ **`bria-rmbg` (RMBG 2.0): somente uso não comercial** (CC BY-NC 4.0, segundo a página do modelo). **Uso
+  comercial exige um contrato com a BRIA.**
+- Vários modelos **não declaram a licença dos pesos**, o que **não** quer dizer uso livre. Isso inclui o padrão,
+  `isnet-general-use`.
 
-"Not stated" does **not** mean "free to use". Check with the authors if it matters for your work.
+Veja a tabela completa em [MODEL_LICENSES.md](MODEL_LICENSES.md). Isto não é aconselhamento jurídico.
 
-## Limitations
+## Limitações
 
-- **Alpha matting** runs on the CPU at full resolution and uses a lot of RAM: about 4 GB extra for a 12 MP
-  image on the test machine (roughly 0.35 GB per megapixel). The app refuses images **over 25 MP**, or a lower
-  limit when little RAM is free, instead of letting the PC stall. ViTMatte is not covered by this limit.
-- Images over 250 megapixels are rejected.
-- Only the first frame of multi-frame files is processed. 16-bit images are converted to 8-bit.
-- Exported PNGs do **not** keep EXIF metadata. The ICC profile is kept only when the source is RGB; CMYK
-  sources are converted without color management.
-- **Results you have not saved are lost when you close the app:** the temporary cache is deleted the next time it
-  starts (until then the files remain under `%APPDATA%\Rembg Studio\cache`). Turn on auto-save to keep them.
-- Cancelling restarts the rembg process, so the next image reloads the model.
-- The queue holds up to 1000 images and the history up to 300 entries.
+- O **alpha matting** roda na CPU, em resolução cheia, e usa muita RAM: cerca de 4 GB a mais numa foto de 12 MP no
+  PC de teste. O app recusa imagens **acima de 25 MP**, ou um limite menor se houver pouca RAM livre, em vez de
+  travar o computador. O ViTMatte não entra nesse limite.
+- Imagens acima de 250 megapixels são recusadas.
+- Só o primeiro quadro de arquivos com vários quadros é processado. Imagens de 16 bits viram 8 bits.
+- Os PNGs exportados **não** mantêm os metadados EXIF. O perfil ICC só é mantido quando a origem é RGB; imagens
+  CMYK são convertidas sem gerenciamento de cor.
+- **Resultados não salvos são perdidos ao fechar o app:** o cache temporário é apagado na próxima abertura (até lá
+  os arquivos continuam em `%APPDATA%\Rembg Studio\cache`). Ligue o salvamento automático para mantê-los.
+- Cancelar reinicia o processo do rembg, e a imagem seguinte recarrega o modelo.
+- A fila aceita até 1000 imagens, e o histórico guarda até 300 itens.
+- A interface existe apenas em português.
 
-## Privacy and local data
+## Privacidade e dados locais
 
-Images are processed on your computer. The app has no accounts, analytics or ads, and the maintainer receives no
-data. It uses the network only when you ask: checking or downloading an update, and rembg downloading a model you
-chose. It asks ONNX Runtime to disable telemetry in the process it starts. History, **file paths** and **thumbnails
-of results** are stored unencrypted in `%APPDATA%\Rembg Studio`. Details, measurements and their limits are in the
-[privacy policy](PRIVACY.md).
+As imagens são processadas no seu computador. O app não tem contas, análise de uso nem anúncios, e o mantenedor não
+recebe dados. A rede só é usada quando você pede: verificar ou baixar uma atualização, e o rembg baixar um modelo
+que você escolheu. O app pede ao ONNX Runtime que desligue a telemetria no processo que ele abre. O histórico, os
+**caminhos dos arquivos** e as **miniaturas dos resultados** ficam sem criptografia em `%APPDATA%\Rembg Studio`.
+Detalhes, medições e os limites delas estão na [Política de Privacidade](PRIVACY.md).
 
-## Code signing policy
+## Assinatura de código (Code signing policy)
 
-Builds are **not code-signed** and no signing application has been approved. See the
-[code signing policy](CODE_SIGNING_POLICY.md).
+As versões **não têm assinatura digital** e nenhum pedido de assinatura foi aprovado. Veja a
+[política de assinatura de código (Code signing policy)](CODE_SIGNING_POLICY.md), em inglês.
 
-## Status and testing
+## O que foi testado
 
-Version 1.1.0, one test machine (see Requirements).
+Versão 1.1.0, num único computador (veja os requisitos).
 
-**On the package built by GitHub:** `RembgStudio-1.1.0-win-x64.zip` passed the 33 app checks (`tests/e2e.mjs`) with
-the real rembg installation and GPU. Its hash matched and its 79 files were identical to a local build of the same
-commit. Without asking for an update, no external connection was observed while processing with an already
-downloaded model. The checks cover start-up, import in the five formats, removal and transparency, protection of
-originals, batch processing, existing-file handling and naming, three models (`isnet-general-use`,
-`birefnet-general-lite`, `bria-rmbg`) and the BRIA notice, the GPU test, forced CPU mode, mask options and alpha
-matting, both size limits, ICC profile, invalid files, cancel, a killed rembg process, history, settings
-persistence, no leftover Python processes, and a setup where rembg cannot be found.
+**No pacote compilado pelo GitHub:** o `RembgStudio-1.1.0-win-x64.zip` passou nas 33 verificações do app
+(`tests/e2e.mjs`), com o rembg e a GPU reais. O hash conferiu, e os 79 arquivos eram idênticos aos de uma
+compilação local do mesmo commit. Sem pedir atualização, nenhum acesso externo foi observado ao processar com um
+modelo já baixado.
 
-**Updater** (`tests/update-e2e.mjs`, 39 checks), on local builds made before the version's last commit, which changed
-only documentation, ownership and workflow comments:
-- *Real:* the portable 1.1.0 downloaded a locally served 1.2.0 test build, verified it, started it and exited; the
-  old file, settings, history and a saved result were unchanged, and no Python process was left. The rembg
-  environment, uv's Python, the models, the app data folder, the CUDA path file and the driver version did not change.
-- *Simulated:* the update server (no newer version, older version, draft, pre-release, wrong tag or architecture,
-  rate limit, server and network errors, cancel, cut or short download, wrong or missing checksum, digest mismatch,
-  invalid file, foreign URL or redirect, tampered file) and native dialogs, including the confirmation in the real
-  portable test.
-- *Real GitHub:* the packaged app's update check, including against the published 1.1.0 release, which it reported
-  as the latest version. The asset fields the updater relies on and the download redirect
-  hosts were also compared, with `curl`, against another published release; the app itself has never downloaded from
-  a published release.
+**Atualizador** (`tests/update-e2e.mjs`, 39 verificações), em compilações locais anteriores ao último commit da
+versão, que mudou só documentos, autoria e comentários do workflow:
 
-**Other simulations:** open/save dialogs are stubbed; drag and drop is injected through Chrome DevTools Protocol.
+- *Real:* o portátil 1.1.0 baixou uma versão de teste 1.2.0 servida no próprio PC, conferiu, abriu a nova e saiu;
+  o arquivo antigo, as configurações, o histórico e um resultado salvo ficaram iguais, sem processo Python sobrando.
+  O ambiente do rembg, o Python do uv, os modelos, os dados do app, o ajuste do CUDA e o driver não mudaram.
+- *Simulado:* o servidor de atualizações (sem versão nova, versão antiga, rascunho, pré-lançamento, erros de rede,
+  cancelamento, download incompleto, hash errado, arquivo inválido, redirecionamento e outros) e as janelas do
+  Windows, inclusive a confirmação no teste real do portátil.
 
-**Not tested:** the published installer and portable files; updating an installed copy; downloading from a real
-published release; signature checking with a signed build; the signing steps of the release workflow; ViTMatte;
-downloading a model from the app; the other 13 models; some batch buttons; choosing another `python.exe`; keyboard
-shortcuts; the "follow Windows" theme; CPU-only installs; other computers, GPUs or Windows versions.
+- *GitHub real:* o app empacotado consultou a release 1.1.0 publicada e informou que ela é a versão mais recente.
 
-## Build from source
+**Outras simulações:** as janelas de abrir e salvar, e o arrastar e soltar (evento injetado no Chromium).
 
-Requires Node.js 22.12 or newer.
+**Não testado:** o instalador e o portátil publicados; a atualização de uma cópia instalada; baixar de uma release
+publicada de verdade; assinatura com uma versão assinada; as etapas de assinatura do workflow; o ViTMatte; baixar
+modelo pelo app; os outros 13 modelos; alguns botões do lote; escolher outro `python.exe`; atalhos de teclado; o
+tema "Igual ao Windows"; instalação só com CPU; outros computadores, placas e versões do Windows.
+
+## Compilar a partir do código
+
+Precisa do Node.js 22.12 ou mais novo.
 
 ```powershell
 git clone https://github.com/odavyyy/rembg-studio.git
@@ -261,60 +263,60 @@ npm ci
 npm start
 ```
 
-| Command | What it does |
+| Comando | O que faz |
 |---|---|
-| `npm run dev` | Vite dev server with hot reload, plus Electron. Restart after changing `electron/`. |
-| `npm run build` | Type-check and build. |
-| `npm run dist` | Build the installer, portable `.exe` and ZIP into `release/`. |
-| `npm run notices` | Regenerate `THIRD_PARTY_NOTICES.md`. |
-| `npm run art` | Re-render `docs/banner.png` from `docs/art/banner.html`. |
-| `node scripts/botoes.mjs` | Regenerate the download buttons and links at the top of both READMEs. |
-| `node tests/e2e.mjs <empty-folder>` | End-to-end tests. Pass a packaged `.exe` as a second argument to test it. |
-| `node tests/unit.mjs` | Update rules (no GPU needed). |
-| `node tests/update-e2e.mjs <empty-folder> release <next-portable.exe>` | Updater tests on packaged builds. Build the second portable with `node scripts/dist.mjs --app-version=1.2.0 --output=release-next --targets=portable`. |
-| `node tests/netaudit.mjs <empty-folder>` | Observe the app's network use. |
+| `npm run dev` | Servidor de desenvolvimento com recarga, mais o Electron. Reinicie após mudar `electron/`. |
+| `npm run build` | Confere os tipos e compila. |
+| `npm run dist` | Gera instalador, portátil e ZIP em `release/`. |
+| `npm run notices` | Gera de novo o `THIRD_PARTY_NOTICES.md`. |
+| `npm run art` | Gera de novo o `docs/banner.png`. |
+| `node scripts/botoes.mjs` | Gera de novo os botões de download e os links no topo dos READMEs. |
+| `node tests/unit.mjs` | Regras do atualizador (não precisa de GPU). |
+| `node tests/e2e.mjs <pasta-vazia>` | Testes de ponta a ponta. Passe um `.exe` empacotado como segundo argumento para testá-lo. |
+| `node tests/update-e2e.mjs <pasta-vazia> release <portátil-seguinte.exe>` | Testes do atualizador em pacotes. |
+| `node tests/netaudit.mjs <pasta-vazia>` | Observa o uso de rede do app. |
 
-- If the Electron binary is missing after `npm ci`, run `node node_modules/electron/install.js`.
-- **Long paths:** NSIS fails with `!include: could not open file` when the project path is long. Build from a
-  short folder such as `C:\src\rembg-studio`.
-- `npm audit` reports moderate advisories in `minimatch`, pulled in by electron-builder. It is build tooling and
-  is not part of the packaged app; the fix npm offers is a breaking downgrade, so it was not applied.
-- `npm run dist` runs `scripts/dist.mjs`, which stops electron-builder from adding its `elevate.exe` helper.
-- While building the installer, electron-builder runs a temporary NSIS stub that only writes the uninstaller
-  file into `release/`.
-- The tests need rembg with a working NVIDIA GPU and the three models listed above already downloaded. Close
-  Rembg Studio first. The folder you pass is wiped, and the test refuses a non-empty folder it did not create.
+- Se o binário do Electron faltar depois do `npm ci`, rode `node node_modules/electron/install.js`.
+- **Caminhos longos:** o NSIS falha com `!include: could not open file` se o caminho do projeto for longo. Compile
+  a partir de uma pasta curta, como `C:\src\rembg-studio`.
+- O `npm audit` aponta alertas moderados no `minimatch`, usado pelo electron-builder. É ferramenta de compilação e
+  não vai dentro do app; a correção oferecida pelo npm é um rebaixamento com mudanças incompatíveis.
+- Ao gerar o instalador, o electron-builder executa um componente temporário do NSIS que só grava o desinstalador.
+- O `npm run dist` impede o electron-builder de incluir o `elevate.exe`.
+- Os testes precisam do rembg com GPU NVIDIA e dos três modelos citados já baixados. Feche o app antes. A pasta
+  informada é apagada, e o teste recusa uma pasta não vazia que ele não criou.
 
-## Project structure
+## Estrutura do projeto
 
 ```text
-python/worker.py   process that calls rembg; JSON over stdin/stdout, no network port
-electron/          window, IPC, sequential queue, export, history, settings
-src/               React + Tailwind interface
-shared/types.ts    types used by both sides
-scripts/           dev runner, bundler, artwork and notices generators
-tests/             end-to-end tests
-docs/              banner, screenshots, release notes
+python/worker.py   processo que chama o rembg; JSON por stdin/stdout, sem porta de rede
+electron/          janela, comunicação interna, fila, exportação, histórico, atualizador
+src/               interface em React + Tailwind
+shared/types.ts    tipos usados pelos dois lados
+scripts/           compilação, arte, avisos e botões
+tests/             testes
+docs/              banner, botões, telas e notas das versões
 ```
 
-The interface runs sandboxed, without Node.js access, and talks to the main process through a small preload
-API. Image files reach it through a custom protocol that only serves files the app already knows about.
+A interface roda isolada, sem acesso ao Node.js, e fala com o processo principal por uma ponte pequena. As imagens
+chegam a ela por um protocolo próprio, que só entrega arquivos que o app já conhece.
 
-## Ownership and how it was made
+## Autoria
 
-Rembg Studio is owned and maintained by [odavyyy](https://github.com/odavyyy), the only code owner.
+O Rembg Studio é de [odavyyy](https://github.com/odavyyy), único dono do código e mantenedor.
 
-It was developed with the help of [Claude](https://www.anthropic.com/claude) (Anthropic): most of the code,
-documentation and artwork was written by Claude, based on requirements set by the owner. Claude is an AI tool used
-in development, not an owner or maintainer. Review the code as you would any other third-party code.
+Foi desenvolvido com a ajuda do [Claude](https://www.anthropic.com/claude) (Anthropic): a maior parte do código, da
+documentação e da arte foi escrita pelo Claude, a partir dos requisitos definidos pelo dono. O Claude é uma
+ferramenta de IA usada no desenvolvimento, não é dono nem mantenedor. Revise o código como faria com qualquer
+código de terceiros.
 
-## License and credits
+## Licença e créditos
 
-The app's code is under the [MIT License](LICENSE), © 2026 odavyyy. It does not change the licenses of rembg,
-the models or other components: see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+Código sob a [Licença MIT](LICENSE), © 2026 odavyyy. Ela não muda as licenças do rembg, dos modelos nem de outros
+componentes: veja os [avisos de terceiros](THIRD_PARTY_NOTICES.md).
 
-- [rembg](https://github.com/danielgatis/rembg) by Daniel Gatis does the background removal. This is an
-  independent project, not affiliated with or endorsed by rembg's author or the model authors.
-- Sample photos in the screenshots and banner come with
-  [scikit-image](https://github.com/scikit-image/scikit-image): *coffee* (Rachel Michetti, courtesy of Pikolo
-  Espresso Bar, CC0) and *chelsea* (Stefan van der Walt, CC0).
+- O [rembg](https://github.com/danielgatis/rembg), de Daniel Gatis, faz a remoção de fundo. Este é um projeto
+  independente, sem vínculo nem endosso do autor do rembg ou dos autores dos modelos.
+- As fotos de exemplo das telas e do banner vêm com o
+  [scikit-image](https://github.com/scikit-image/scikit-image): *coffee* (Rachel Michetti, cortesia do Pikolo
+  Espresso Bar, CC0) e *chelsea* (Stefan van der Walt, CC0).

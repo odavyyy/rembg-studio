@@ -31,13 +31,13 @@ ${fundo}
 
 const IDIOMAS = [
   {
-    readme: 'README.pt-BR.md',
+    readme: 'README.md',
     principal: { arquivo: 'baixar-principal.svg', titulo: 'Baixar para Windows', subtitulo: `Instalador .exe · v${VERSAO} · ${TAMANHOS.instalador}`, alt: `Baixar o instalador (v${VERSAO})` },
     secundario: { arquivo: 'baixar-secundario.svg', titulo: 'Baixar versão portátil', subtitulo: `Sem instalação · v${VERSAO} · ${TAMANHOS.portatil}`, alt: `Baixar a versão portátil (v${VERSAO})` },
     linha: `Windows 64 bits · precisa do <a href="#instalação">rembg instalado</a> · sem assinatura digital · estes dois .exe ainda não foram testados (<a href="${BASE}/${ARQUIVOS.zip}">o .zip, ${TAMANHOS.zip}, foi</a>) · <a href="../../releases/latest">todas as versões</a>`,
   },
   {
-    readme: 'README.md',
+    readme: 'README.en.md',
     principal: { arquivo: 'download-main.svg', titulo: 'Download for Windows', subtitulo: `.exe installer · v${VERSAO} · ${TAMANHOS.instalador}`, alt: `Download the installer (v${VERSAO})` },
     secundario: { arquivo: 'download-portable.svg', titulo: 'Download portable', subtitulo: `No installation · v${VERSAO} · ${TAMANHOS.portatil}`, alt: `Download the portable version (v${VERSAO})` },
     linha: `Windows 64-bit · requires <a href="#install">rembg installed</a> · not code-signed · these two .exe files have not been tested (<a href="${BASE}/${ARQUIVOS.zip}">the .zip, ${TAMANHOS.zip}, has</a>) · <a href="../../releases/latest">all versions</a>`,
@@ -45,6 +45,19 @@ const IDIOMAS = [
 ]
 
 mkdirSync('docs/botoes', { recursive: true })
+
+// botoes de troca de idioma
+for (const [arquivo, texto] of [['idioma-english.svg', 'Read in English'], ['idioma-portugues.svg', 'Ler em Português']]) {
+  writeFileSync(
+    `docs/botoes/${arquivo}`,
+    `<svg xmlns="http://www.w3.org/2000/svg" width="190" height="40" viewBox="0 0 190 40" role="img" aria-label="${texto}">
+  <rect x="1" y="1" width="188" height="38" rx="10" fill="#181b21" stroke="#7c6cff" stroke-width="2"/>
+  <g transform="translate(15 10)" fill="none" stroke="#ffffff" stroke-width="1.6"><circle cx="10" cy="10" r="9"/><ellipse cx="10" cy="10" rx="4" ry="9"/><path d="M1 10h18"/></g>
+  <text x="108" y="25" text-anchor="middle" font-family="${FONTE}" font-size="14" font-weight="700" fill="#ffffff">${texto}</text>
+</svg>
+`,
+  )
+}
 for (const i of IDIOMAS) {
   writeFileSync(`docs/botoes/${i.principal.arquivo}`, botao({ ...i.principal, principal: true }))
   writeFileSync(`docs/botoes/${i.secundario.arquivo}`, botao({ ...i.secundario, principal: false }))
