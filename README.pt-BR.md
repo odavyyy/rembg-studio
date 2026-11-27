@@ -124,11 +124,19 @@ publicada de verdade, assinatura com versão assinada, o workflow do GitHub, o V
 app, os outros 13 modelos e outros computadores. A lista completa está no
 [README em inglês](README.md#status-and-testing).
 
-## Como compilar, licença e créditos
+## Como compilar
 
-Veja [Build from source](README.md#build-from-source). O projeto foi desenvolvido com ajuda substancial de IA:
-a maior parte do código, da documentação e da arte foi escrita pelo [Claude](https://www.anthropic.com/claude)
-(Anthropic), a partir dos requisitos do mantenedor.
+Veja [Build from source](README.md#build-from-source).
+
+## Autoria
+
+O Rembg Studio é de [odavyyy](https://github.com/odavyyy), único dono do código e mantenedor.
+
+Foi desenvolvido com a ajuda do [Claude](https://www.anthropic.com/claude) (Anthropic): a maior parte do código, da
+documentação e da arte foi escrita pelo Claude, a partir dos requisitos definidos pelo dono. O Claude é uma
+ferramenta de IA usada no desenvolvimento, não é dono nem mantenedor.
+
+## Licença e créditos
 
 Código sob a [Licença MIT](LICENSE), © 2026 odavyyy. Veja os [avisos de terceiros](THIRD_PARTY_NOTICES.md).
 Projeto independente, sem vínculo com o autor do rembg ou dos modelos.

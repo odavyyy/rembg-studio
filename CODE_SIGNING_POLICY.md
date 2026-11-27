@@ -32,7 +32,7 @@ else has been given write access.
 - **Today:** release builds are made on the maintainer's computer from a clean copy of the tagged source
   (`npm ci`, `npm run dist`) and tested there with `tests/e2e.mjs` and `tests/update-e2e.mjs`.
 - **Planned for signing:** `.github/workflows/release.yml` builds on GitHub-hosted runners from the tag. The GPU
-  tests cannot run there. The workflow has not been run yet.
+  tests cannot run there. Signing through this workflow has never been run.
 - Dependencies are pinned by `package-lock.json`.
 
 ## Planned signing process

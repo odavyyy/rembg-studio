@@ -284,11 +284,13 @@ docs/              banner, screenshots, release notes
 The interface runs sandboxed, without Node.js access, and talks to the main process through a small preload
 API. Image files reach it through a custom protocol that only serves files the app already knows about.
 
-## How it was made
+## Ownership and how it was made
 
-Rembg Studio was developed with substantial help from AI: most of the code, documentation and artwork was
-written by [Claude](https://www.anthropic.com/claude) (Anthropic), based on requirements set by the
-maintainer. Review it as you would any other third-party code.
+Rembg Studio is owned and maintained by [odavyyy](https://github.com/odavyyy), the only code owner.
+
+It was developed with the help of [Claude](https://www.anthropic.com/claude) (Anthropic): most of the code,
+documentation and artwork was written by Claude, based on requirements set by the owner. Claude is an AI tool used
+in development, not an owner or maintainer. Review the code as you would any other third-party code.
 
 ## License and credits
 

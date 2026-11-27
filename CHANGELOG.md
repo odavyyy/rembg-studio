@@ -4,6 +4,8 @@ This project follows [Semantic Versioning](https://semver.org/).
 
 ## [1.1.0] - unreleased
 
+Ownership: odavyyy. Developed with the help of Claude (Anthropic).
+
 ### Added
 
 - In-app updates from the official GitHub releases (manual check), with progress, cancel, SHA-256 verification and

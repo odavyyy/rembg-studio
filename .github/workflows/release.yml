@@ -1,6 +1,6 @@
 # Build das releases no GitHub, com assinatura opcional pela SignPath.
 #
-# AINDA NAO EXECUTADO. A assinatura fica desligada ate o projeto ser aprovado e
+# A parte de assinatura NUNCA foi executada. Ela fica desligada ate o projeto ser aprovado e
 # a variavel SIGNPATH_ENABLED ser definida como "true" (veja docs/SIGNING_SETUP.md).
 # Este workflow so cria RASCUNHO de release; publicar e sempre manual.
 name: release

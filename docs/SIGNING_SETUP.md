@@ -3,7 +3,7 @@
 Nothing here is active. The project has no certificate, token or approval. See
 [CODE_SIGNING_POLICY.md](../CODE_SIGNING_POLICY.md).
 
-The `.github/workflows/release.yml` workflow has **not been run yet**. Without `SIGNPATH_ENABLED` it builds the
+The signing steps of `.github/workflows/release.yml` have **never been run**. Without `SIGNPATH_ENABLED` it builds the
 unsigned packages and creates a draft release.
 
 ## After approval
