@@ -4,11 +4,25 @@
 
 # Rembg Studio
 
+<!-- botoes:inicio (gerado por scripts/botoes.mjs) -->
+<p align="center">
+  <a href="https://github.com/odavyyy/rembg-studio/releases/download/v1.1.0/RembgStudio-Setup-1.1.0.exe"><img src="docs/botoes/download-main.svg" alt="Download the installer (v1.1.0)" width="330"></a>
+  &nbsp;&nbsp;
+  <a href="https://github.com/odavyyy/rembg-studio/releases/download/v1.1.0/RembgStudio-1.1.0-portatil.exe"><img src="docs/botoes/download-portable.svg" alt="Download the portable version (v1.1.0)" width="330"></a>
+</p>
+
+<p align="center">
+  Windows 64-bit · requires <a href="#install">rembg installed</a> · not code-signed · these two .exe files have not been tested (<a href="https://github.com/odavyyy/rembg-studio/releases/download/v1.1.0/RembgStudio-1.1.0-win-x64.zip">the .zip, 147 MB, has</a>) · <a href="../../releases/latest">all versions</a>
+</p>
+<!-- botoes:fim -->
+
+<p align="center">
+  <strong>English</strong> · <a href="README.pt-BR.md"><strong>Leia em Português (Brasil)</strong></a>
+</p>
+
 A Windows desktop app for background removal using [rembg](https://github.com/danielgatis/rembg), with GPU
 acceleration and batch processing. Drop images in, compare before and after, and export transparent PNGs.
 Images are processed on your computer and are not uploaded anywhere.
-
-**English** · [Português (Brasil)](README.pt-BR.md)
 
 [Privacy policy](PRIVACY.md) · [Usage notes](TERMS.md) · [Model licenses](MODEL_LICENSES.md) · [Code signing policy](CODE_SIGNING_POLICY.md)
 
@@ -81,9 +95,9 @@ From the [Releases](../../releases) page, pick one:
 
 | File | What it is |
 |---|---|
-| `RembgStudio-Setup-1.1.0.exe` | Installer (per user, you choose the folder). **Not tested yet.** |
-| `RembgStudio-1.1.0-portatil.exe` | Single portable file. It unpacks on every launch, so it starts a bit slower. |
-| `RembgStudio-1.1.0-win-x64.zip` | Extract anywhere and run `Rembg Studio.exe`. |
+| `RembgStudio-Setup-1.1.0.exe` | Installer (per user, you choose the folder). **Not tested.** |
+| `RembgStudio-1.1.0-portatil.exe` | Single portable file. It unpacks on every launch, so it starts a bit slower. **The published file was not tested.** |
+| `RembgStudio-1.1.0-win-x64.zip` | Extract anywhere and run `Rembg Studio.exe`. **This published package was tested.** |
 
 The builds are **not code-signed**, so Windows SmartScreen may warn you. Verify your download against
 `SHA256SUMS.txt`:
@@ -205,33 +219,32 @@ Builds are **not code-signed** and no signing application has been approved. See
 
 Version 1.1.0, one test machine (see Requirements).
 
-**Tested on the packaged app with the real rembg installation and GPU** (`tests/e2e.mjs`, 33 checks): start-up,
-import in the five formats, removal and transparency, protection of originals, batch processing, existing-file
-handling and naming, three models (`isnet-general-use`, `birefnet-general-lite`, `bria-rmbg`) and the BRIA notice,
-the GPU test, forced CPU mode, mask options and alpha matting, both size limits, ICC profile, invalid files,
-cancel, a killed rembg process, history, settings persistence, no leftover Python processes, and a setup where rembg
-cannot be found.
+**On the package built by GitHub:** `RembgStudio-1.1.0-win-x64.zip` passed the 33 app checks (`tests/e2e.mjs`) with
+the real rembg installation and GPU. Its hash matched and its 79 files were identical to a local build of the same
+commit. Without asking for an update, no external connection was observed while processing with an already
+downloaded model. The checks cover start-up, import in the five formats, removal and transparency, protection of
+originals, batch processing, existing-file handling and naming, three models (`isnet-general-use`,
+`birefnet-general-lite`, `bria-rmbg`) and the BRIA notice, the GPU test, forced CPU mode, mask options and alpha
+matting, both size limits, ICC profile, invalid files, cancel, a killed rembg process, history, settings
+persistence, no leftover Python processes, and a setup where rembg cannot be found.
 
-**Updater** (`tests/update-e2e.mjs`, 39 checks against packaged builds):
-- *Real:* the portable 1.1.0 downloaded a locally served 1.2.0 test build, verified it, started it and exited;
-  the old file, settings, history and a saved result were unchanged, and no Python process was left. The rembg
-  environment, uv's Python, the models, the real app data folder, the CUDA path file and the driver version were
-  unchanged (file lists, sizes and timestamps).
+**Updater** (`tests/update-e2e.mjs`, 39 checks), on local builds made before the version's last commit, which changed
+only documentation, ownership and workflow comments:
+- *Real:* the portable 1.1.0 downloaded a locally served 1.2.0 test build, verified it, started it and exited; the
+  old file, settings, history and a saved result were unchanged, and no Python process was left. The rembg
+  environment, uv's Python, the models, the app data folder, the CUDA path file and the driver version did not change.
 - *Simulated:* the update server (no newer version, older version, draft, pre-release, wrong tag or architecture,
   rate limit, server and network errors, cancel, cut or short download, wrong or missing checksum, digest mismatch,
   invalid file, foreign URL or redirect, tampered file) and native dialogs, including the confirmation in the real
   portable test.
-- *Real GitHub:* the packaged app's update check, which reported no published release. The asset fields the
-  updater relies on and the download redirect hosts were also compared, with `curl`, against another published
-  release; the app itself has never downloaded from a published release.
-
-**Pure update rules:** `tests/unit.mjs`.
+- *Real GitHub:* the packaged app's update check. The asset fields the updater relies on and the download redirect
+  hosts were also compared, with `curl`, against another published release; the app itself has never downloaded from
+  a published release.
 
 **Other simulations:** open/save dialogs are stubbed; drag and drop is injected through Chrome DevTools Protocol.
 
-**Not tested:** the installer, including updating an installed copy (only the app side was exercised, with the
-installer never run); downloading from a real published release, including GitHub's CDN redirects; signature
-checking with a signed build; the release workflow; the ZIP and portable downloaded from GitHub; ViTMatte;
+**Not tested:** the published installer and portable files; updating an installed copy; downloading from a real
+published release; signature checking with a signed build; the signing steps of the release workflow; ViTMatte;
 downloading a model from the app; the other 13 models; some batch buttons; choosing another `python.exe`; keyboard
 shortcuts; the "follow Windows" theme; CPU-only installs; other computers, GPUs or Windows versions.
 
@@ -253,6 +266,7 @@ npm start
 | `npm run dist` | Build the installer, portable `.exe` and ZIP into `release/`. |
 | `npm run notices` | Regenerate `THIRD_PARTY_NOTICES.md`. |
 | `npm run art` | Re-render `docs/banner.png` from `docs/art/banner.html`. |
+| `node scripts/botoes.mjs` | Regenerate the download buttons and links at the top of both READMEs. |
 | `node tests/e2e.mjs <empty-folder>` | End-to-end tests. Pass a packaged `.exe` as a second argument to test it. |
 | `node tests/unit.mjs` | Update rules (no GPU needed). |
 | `node tests/update-e2e.mjs <empty-folder> release <next-portable.exe>` | Updater tests on packaged builds. Build the second portable with `node scripts/dist.mjs --app-version=1.2.0 --output=release-next --targets=portable`. |

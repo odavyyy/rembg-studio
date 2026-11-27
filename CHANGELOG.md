@@ -2,7 +2,7 @@
 
 This project follows [Semantic Versioning](https://semver.org/).
 
-## [1.1.0] - unreleased
+## [1.1.0] - 2026-11-27
 
 Ownership: odavyyy. Developed with the help of Claude (Anthropic).
 
@@ -13,7 +13,8 @@ Ownership: odavyyy. Developed with the help of Claude (Anthropic).
 - **Sobre** (About) page with version, updates, documents and support links.
 - Privacy policy, usage notes, model license table and code signing policy, included in the app.
 - One-time license notice before using or downloading `bria-rmbg`.
-- Release workflow prepared for optional code signing (not yet run).
+- Release workflow that builds the packages on GitHub and creates a draft release, with optional code signing
+  steps (switched off, never run).
 
 ### Changed
 

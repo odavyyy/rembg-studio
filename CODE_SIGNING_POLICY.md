@@ -29,10 +29,10 @@ else has been given write access.
 - Source: <https://github.com/odavyyy/rembg-studio>. Releases are built from a version tag.
 - Contributions from others arrive as pull requests and are reviewed before merging. Most of the code was written
   with AI assistance under the maintainer's direction (see the README).
-- **Today:** release builds are made on the maintainer's computer from a clean copy of the tagged source
-  (`npm ci`, `npm run dist`) and tested there with `tests/e2e.mjs` and `tests/update-e2e.mjs`.
-- **Planned for signing:** `.github/workflows/release.yml` builds on GitHub-hosted runners from the tag. The GPU
-  tests cannot run there. Signing through this workflow has never been run.
+- **Today:** from version 1.1.0, `.github/workflows/release.yml` builds the packages on GitHub-hosted runners from
+  the version tag and creates a **draft** release that the maintainer publishes by hand. The GPU tests cannot run
+  there; the maintainer's computer is used for them (see "Status and testing" in the README).
+- **Signing:** the workflow has signing steps, which are switched off and have never been run.
 - Dependencies are pinned by `package-lock.json`.
 
 ## Planned signing process

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="330" height="66" viewBox="0 0 330 66" role="img" aria-label="Baixar versão portátil">
+  <rect x="1" y="1" width="328" height="64" rx="14" fill="#181b21" stroke="#7c6cff" stroke-width="2"/>
+  <g transform="translate(26 20)" fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="M6 11l6 6 6-6"/><path d="M4 22h16"/></g>
+  <text x="68" y="30" font-family="Segoe UI, -apple-system, Helvetica, Arial, sans-serif" font-size="19" font-weight="700" fill="#ffffff">Baixar versão portátil</text>
+  <text x="68" y="50" font-family="Segoe UI, -apple-system, Helvetica, Arial, sans-serif" font-size="13" fill="#b9bdc9">Sem instalação · v1.1.0 · 106 MB</text>
+</svg>
