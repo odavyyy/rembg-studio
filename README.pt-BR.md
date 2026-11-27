@@ -135,7 +135,8 @@ ocupada. A versão 1.0.0 não tem atualizador.
 
 Limites: as somas vêm da mesma release dos arquivos. Elas detectam download corrompido, mas **não provam autoria**
 se a conta ou o repositório forem invadidos. Quando houver uma versão assinada, o atualizador também vai exigir
-assinatura válida do mesmo emissor. O atualizador nunca baixou de uma release publicada de verdade.
+assinatura válida do mesmo emissor. A verificação já rodou contra a release 1.1.0 publicada, mas o app nunca baixou
+uma atualização de uma release publicada.
 
 ### Como desinstalar
 
@@ -241,6 +242,8 @@ versão, que mudou só documentos, autoria e comentários do workflow:
 - *Simulado:* o servidor de atualizações (sem versão nova, versão antiga, rascunho, pré-lançamento, erros de rede,
   cancelamento, download incompleto, hash errado, arquivo inválido, redirecionamento e outros) e as janelas do
   Windows, inclusive a confirmação no teste real do portátil.
+
+- *GitHub real:* o app empacotado consultou a release 1.1.0 publicada e informou que ela é a versão mais recente.
 
 **Outras simulações:** as janelas de abrir e salvar, e o arrastar e soltar (evento injetado no Chromium).
 

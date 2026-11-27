@@ -132,8 +132,9 @@ Version 1.0.0 has no updater, so moving from it to 1.1.0 is a manual download.
 
 Limits: the checksums come from the same release as the files, so they catch damaged downloads but do **not** prove
 authorship if the repository or account were compromised. Builds are not signed yet. Once a signed version is in
-use, the updater also requires a valid signature from the same signer. The updater has never been run against a real
-published release (see [Status and testing](#status-and-testing)).
+use, the updater also requires a valid signature from the same signer. The update check has run against the published
+1.1.0 release, but the app has never downloaded an update from a published release (see
+[Status and testing](#status-and-testing)).
 
 ### Uninstalling
 
@@ -237,7 +238,8 @@ only documentation, ownership and workflow comments:
   rate limit, server and network errors, cancel, cut or short download, wrong or missing checksum, digest mismatch,
   invalid file, foreign URL or redirect, tampered file) and native dialogs, including the confirmation in the real
   portable test.
-- *Real GitHub:* the packaged app's update check. The asset fields the updater relies on and the download redirect
+- *Real GitHub:* the packaged app's update check, including against the published 1.1.0 release, which it reported
+  as the latest version. The asset fields the updater relies on and the download redirect
   hosts were also compared, with `curl`, against another published release; the app itself has never downloaded from
   a published release.
 
